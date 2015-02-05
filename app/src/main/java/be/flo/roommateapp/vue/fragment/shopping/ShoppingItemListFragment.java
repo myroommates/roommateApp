@@ -20,6 +20,7 @@ import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.activity.MainActivity;
 import be.flo.roommateapp.vue.activity.edit.EditShoppingItemActivity;
+import be.flo.roommateapp.vue.fragment.IntentBuilder;
 import be.flo.roommateapp.vue.fragment.NavigationDrawerFragment;
 import be.flo.roommateapp.vue.listAdapter.ShoppingItemListAdapter;
 
@@ -166,9 +167,8 @@ public class ShoppingItemListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.b_shopping_edit:
 
-                Intent intent = new Intent(ShoppingItemListFragment.this.getActivity(), EditShoppingItemActivity.class);
+                Intent intent = IntentBuilder.buildIntent(this,EditShoppingItemActivity.class);
                 intent.putExtra(EditShoppingItemActivity.SHOPPING_ITEM_ID, adapter.getItem(info.position).getId());
-                intent.putExtra(MainActivity.INTENT_MENU,NavigationDrawerFragment.MenuElement.MENU_EL_SHOPPING.getOrder());
                 startActivity(intent);
 
                 return true;
@@ -213,9 +213,8 @@ public class ShoppingItemListFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.b_add_shopping_item:
-                Intent intent=new Intent(ShoppingItemListFragment.this.getActivity(), EditShoppingItemActivity.class);
-                intent.putExtra(MainActivity.INTENT_MENU,NavigationDrawerFragment.MenuElement.MENU_EL_SHOPPING.getOrder());
-                startActivity(intent);
+
+                startActivity(IntentBuilder.buildIntent(this,EditShoppingItemActivity.class));
                 return true;
             case R.id.b_refresh_shopping_item:
                 RefreshRequest request = new RefreshRequest();

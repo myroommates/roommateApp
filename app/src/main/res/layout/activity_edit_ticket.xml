@@ -15,54 +15,6 @@
             >
 
 
-            <!-- date -->
-            <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <!-- label -->
-                <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/g_date"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical|left" android:gravity="left|center_vertical"/>
-
-                <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:orientation="horizontal"
-                        android:id="@+id/date_container">
-                    </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- description -->
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!-- label -->
-                <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/g_desc"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical|left" android:gravity="left|center_vertical"/>
-
-                <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:id="@+id/txt_desc"
-                        />
-            </LinearLayout>
-
             <!-- category -->
             <LinearLayout
                     android:layout_width="fill_parent"

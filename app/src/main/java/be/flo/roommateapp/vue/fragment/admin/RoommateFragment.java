@@ -21,6 +21,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.activity.edit.EditRoommateActivity;
+import be.flo.roommateapp.vue.fragment.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.BalanceListAdapter;
 import be.flo.roommateapp.vue.listAdapter.RoommateListAdapter;
 
@@ -115,7 +116,7 @@ public class RoommateFragment extends Fragment {
             case R.id.b_edit:
 
                 //edit => to the editRoommate activity
-                Intent intent = new Intent(RoommateFragment.this.getActivity(), EditRoommateActivity.class);
+                Intent intent = IntentBuilder.buildIntent(this, EditRoommateActivity.class);
                 intent.putExtra("roommateId", adapter.getItem(info.position).getId());
                 startActivity(intent);
                 return true;
@@ -161,7 +162,7 @@ public class RoommateFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.b_add_roommate:
-                startActivity(new Intent(RoommateFragment.this.getActivity(), EditRoommateActivity.class));
+                startActivity(IntentBuilder.buildIntent(this, EditRoommateActivity.class));
                 return true;
             case R.id.b_refresh_roommate:
                 RefreshRequest request = new RefreshRequest();

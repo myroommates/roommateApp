@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.Button;
 import android.widget.ListView;
@@ -14,9 +15,11 @@ import be.flo.roommateapp.model.dto.TicketDTO;
 import be.flo.roommateapp.model.dto.TicketDebtorDTO;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.StringUtil;
+import be.flo.roommateapp.vue.activity.edit.EditRoommateActivity;
 import be.flo.roommateapp.vue.activity.edit.EditShoppingItemActivity;
 import be.flo.roommateapp.vue.activity.edit.EditTicketActivity;
 import be.flo.roommateapp.vue.dialog.DialogConstructor;
+import be.flo.roommateapp.vue.fragment.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.ShoppingItemSelectableListAdapter;
 
 /**
@@ -80,14 +83,15 @@ public class WelcomeFragment extends Fragment {
         addTicketBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WelcomeFragment.this.getActivity(), EditTicketActivity.class));
+                startActivity(IntentBuilder.buildIntent(WelcomeFragment.this, EditTicketActivity.class));
             }
         });
 
         addShoppingItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(WelcomeFragment.this.getActivity(), EditShoppingItemActivity.class));
+
+                startActivity(IntentBuilder.buildIntent(WelcomeFragment.this, EditShoppingItemActivity.class));
             }
         });
 
@@ -107,11 +111,11 @@ public class WelcomeFragment extends Fragment {
 
                     //display warning message
                     //todo translate
-                    DialogConstructor.dialogWarning(WelcomeFragment.this.getActivity(),"you must selected at least one shopping item").show();
+                    DialogConstructor.dialogWarning(WelcomeFragment.this.getActivity(), "you must selected at least one shopping item").show();
 
                 } else {
 
-                    Intent intent = new Intent(WelcomeFragment.this.getActivity(), EditTicketActivity.class);
+                    Intent intent = IntentBuilder.buildIntent(WelcomeFragment.this, EditTicketActivity.class);
                     intent.putExtra(EditTicketActivity.TICKET_LIST_ID_SHOPPING_ITEM, shoppingItemString);
                     startActivity(intent);
                 }
@@ -128,13 +132,19 @@ public class WelcomeFragment extends Fragment {
         double payed = 0.0;
 
         for (TicketDTO ticketDTO : Storage.getTicketList()) {
-            for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
-                if (ticketDTO.getPayerId().equals(mySelfId)) {
-                    payed += ticketDebtorDTO.getValue();
+                if (ticketDTO.getDebtorList() != null) {
+
+                for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
+                    if (ticketDTO.getPayerId().equals(mySelfId)) {
+                        payed += ticketDebtorDTO.getValue();
+                    }
+                    if (ticketDebtorDTO.getRoommateId().equals(mySelfId)) {
+                        mustPay += ticketDebtorDTO.getValue();
+                    }
                 }
-                if (ticketDebtorDTO.getRoommateId().equals(mySelfId)) {
-                    mustPay += ticketDebtorDTO.getValue();
-                }
+            } else {
+                //??
+                Log.e("ERROR "+this.getClass().getName(),"ticket "+ticketDTO.getId()+" doesn't have any debtor !! ");
             }
         }
         return payed - mustPay;

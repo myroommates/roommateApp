@@ -24,31 +24,6 @@ import be.flo.roommateapp.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-    public static enum MenuElement {
-        MENU_EL_WELCOME(R.string.nav_drawer_welcome, 0),
-        MENU_EL_COUNT(R.string.nav_drawer_count, 1),
-        MENU_EL_SHOPPING(R.string.nav_drawer_shopping, 2),
-        MENU_EL_CONFIG(R.string.nav_drawer_config, 3),
-        MENU_EL_PROFILE(R.string.nav_drawer_my_profile, 4),
-        MENU_EL_LOGOUT(R.string.nav_drawer_logout, 5);
-
-        private final int name;
-        private final int order;
-
-        private MenuElement(int name, int order) {
-            this.name = name;
-            this.order = order;
-        }
-
-        public int getName() {
-            return name;
-        }
-
-        public int getOrder() {
-            return order;
-        }
-    }
-
     /**
      * Remember the position of the selected item.
      */
@@ -117,9 +92,9 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        String[] s = new String[MenuElement.values().length];
+        String[] s = new String[MenuManager.MenuElement.values().length];
 
-        for (MenuElement menuElement : MenuElement.values()) {
+        for (MenuManager.MenuElement menuElement : MenuManager.MenuElement.values()) {
             s[menuElement.getOrder()] = getString(menuElement.getName());
         }
 

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by florian on 17/11/14.
  */
-public class Field extends LinearLayout{
+public class Field extends LinearLayout {
 
     private final Activity activity;
     private FieldProperties fieldProperties;
@@ -51,13 +51,73 @@ public class Field extends LinearLayout{
 
         //build field
         try {
-            buildField(fieldProperties, defaultValue);
+            buildField(fieldProperties);
+            if(defaultValue!=null){
+                setValue(defaultValue);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void buildField(FieldProperties fieldProperties, Object defaultValue) throws MyException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void setValue(Object value) {
+
+        if (fieldProperties.listEnum != null) {
+
+            switch (fieldProperties.listEnum) {
+                case ROOMMATE:
+                    if (fieldProperties.listMultipleResponse) {
+
+                        //insert
+                        if (value != null) {
+                            ((MultiSelectionSpinner<RoommateDTO>) fieldProperties.getInputView()).setSelection(Storage.getRoommates(((List<Long>) value)));
+                        } else {
+                            ((MultiSelectionSpinner<RoommateDTO>) fieldProperties.getInputView()).setSelection(null);
+                        }
+
+                    } else {
+                        //nothing
+                    }
+                    break;
+                case CATEGORY:
+                    if (fieldProperties.listMultipleResponse) {
+                        //nothing
+                    } else {
+                        if (value != null) {
+                            ((SelectionWithOpenFieldSpinner) fieldProperties.getInputView()).setSelection(((String) value));
+                        } else {
+                            ((SelectionWithOpenFieldSpinner) fieldProperties.getInputView()).setSelection(null);
+                        }
+                    }
+                    break;
+            }
+        } else {
+
+            // ** DATE **
+            if (fieldProperties.field.getType().isAssignableFrom(Date.class)) {
+                //try to insert dto values
+                ((DateView) fieldProperties.getInputView()).setDate(((Date) value));
+
+            } else if (fieldProperties.field.getType().isAssignableFrom(Boolean.class)) {
+
+                //try to insert dto values
+                if(value!=null) {
+                    ((CheckBox) fieldProperties.getInputView()).setChecked(Boolean.parseBoolean(value.toString()));
+                }
+            } else {
+
+                //try to insert dto values
+                if (value != null) {
+                    ((EditText) fieldProperties.getInputView()).setText(value.toString());
+                }
+                else{
+                    ((EditText) fieldProperties.getInputView()).setText("");
+                }
+            }
+        }
+    }
+
+    private void buildField(FieldProperties fieldProperties) throws MyException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         //build layout
         setOrientation(VERTICAL);
@@ -72,11 +132,15 @@ public class Field extends LinearLayout{
         View view = inflater.inflate(R.layout.form_line, null);
         addView(view);
         View errorView = view.findViewById(R.id.field_error_message);
+        //hide the errorView message
+        errorView.setVisibility(GONE);
+
         ViewGroup contentView = (ViewGroup) view.findViewById(R.id.insert_point);
 
         //text view
         TextView labelText = (TextView) view.findViewById(R.id.label);//(TextView) view.findViewById(R.id.label));
         labelText.setText(fieldProperties.translationId);
+
 
 
         // ** LIST (for roommate and category) **
@@ -90,11 +154,6 @@ public class Field extends LinearLayout{
                         spinner = new MultiSelectionSpinner<RoommateDTO>(activity);
                         ((MultiSelectionSpinner<RoommateDTO>) spinner).setItems(Storage.getRoommateList());
 
-                        //insert
-                        if (defaultValue != null) {
-                            ((MultiSelectionSpinner<RoommateDTO>) spinner).setSelection(Storage.getRoommates(((List<Long>) defaultValue)));
-                        }
-
                     } else {
                         spinner = new SingleSelectionSpinner<RoommateDTO>(activity);
                         ((SingleSelectionSpinner<RoommateDTO>) spinner).setItems(Storage.getRoommateList());
@@ -102,12 +161,9 @@ public class Field extends LinearLayout{
                     break;
                 case CATEGORY:
                     if (fieldProperties.listMultipleResponse) {
-                        //TODO nothing
+                        //nothing
                     } else {
                         spinner = new SelectionWithOpenFieldSpinner(activity, Storage.getCategoryList());
-                        if (defaultValue != null) {
-                            ((SelectionWithOpenFieldSpinner) spinner).setSelection(((String) defaultValue));
-                        }
                     }
                     break;
             }
@@ -123,23 +179,10 @@ public class Field extends LinearLayout{
                 final DateView textView = new DateView(activity);
                 fieldProperties.inputView = textView;
 
-                //try to insert dto values
-                if (defaultValue != null) {
-                    textView.setDate(((Date) defaultValue));
-                }
-
             } else if (fieldProperties.field.getType().isAssignableFrom(Boolean.class)) {
 
                 //build the view
                 View checkBox = new CheckBox(activity);
-
-                //hide the errorView message
-                errorView.findViewById(R.id.field_error_message).setVisibility(GONE);
-
-                //try to insert dto values
-                if (defaultValue != null) {
-                    ((CheckBox) checkBox).setChecked(Boolean.parseBoolean(defaultValue.toString()));
-                }
 
                 //add view
                 fieldProperties.inputView = checkBox;
@@ -166,26 +209,16 @@ public class Field extends LinearLayout{
                     }
                 }
 
-                //hide the errorView message
-                errorView.findViewById(R.id.field_error_message).setVisibility(GONE);
-
-                //try to insert dto values
-                if (defaultValue != null) {
-                    ((EditText) editText).setText(defaultValue.toString());
-                }
-
                 fieldProperties.inputView = editText;
             }
-
 
 
             //add to the map
             fieldProperties.errorView = errorView;
             fieldProperties.questionView = view;
         }
-        
-        contentView.addView(fieldProperties.inputView);
 
+        contentView.addView(fieldProperties.inputView);
     }
 
     public boolean control() {

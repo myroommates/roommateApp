@@ -36,7 +36,7 @@ public class Storage {
 
         authenticationKey = loginSuccessDTO.getAuthenticationKey();
         if (ticketList == null) {
-            ticketList = new ArrayList<TicketDTO>();
+            ticketList = new ArrayList<>();
         }
 
         if(shoppingItemList==null){

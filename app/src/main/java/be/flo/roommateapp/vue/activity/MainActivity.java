@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.util.Storage;
+import be.flo.roommateapp.vue.fragment.MenuManager;
 import be.flo.roommateapp.vue.fragment.NavigationDrawerFragment;
 import be.flo.roommateapp.vue.pager.*;
 import be.flo.roommateapp.vue.technical.slidingBar.SliderBar;
@@ -31,6 +32,9 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         //recover roommateDTO id
         Intent i = getIntent();
+
+        Log.w("menu","MENU : "+i.getIntExtra(INTENT_MENU,-1));
+        Log.w("menu","TAB : "+i.getIntExtra(INTENT_TAB,-1));
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         if (i.getIntExtra(INTENT_MENU,-1) != -1) {
@@ -70,28 +74,24 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         // update the main content by replacing fragments
         PagerAdapter pagerAdapter = null;
 
-        if (position == NavigationDrawerFragment.MenuElement.MENU_EL_WELCOME.getOrder()) {
+        if (position == MenuManager.MenuElement.MENU_EL_WELCOME.getOrder()) {
             pagerAdapter = new WelcomePager(getSupportFragmentManager(), this);
-        } else if (position == NavigationDrawerFragment.MenuElement.MENU_EL_COUNT.getOrder()) {
+        } else if (position == MenuManager.MenuElement.MENU_EL_COUNT.getOrder()) {
             pagerAdapter = new CountPager(getSupportFragmentManager(), this);
-        } else if (position == NavigationDrawerFragment.MenuElement.MENU_EL_SHOPPING.getOrder()) {
+        } else if (position == MenuManager.MenuElement.MENU_EL_SHOPPING.getOrder()) {
             pagerAdapter = new ShoppingPager(getSupportFragmentManager(), this);
-        } else if (position == NavigationDrawerFragment.MenuElement.MENU_EL_CONFIG.getOrder()) {
+        } else if (position == MenuManager.MenuElement.MENU_EL_CONFIG.getOrder()) {
             pagerAdapter = new ConfigPager(getSupportFragmentManager(), this);
-        } else if (position == NavigationDrawerFragment.MenuElement.MENU_EL_PROFILE.getOrder()) {
+        } else if (position == MenuManager.MenuElement.MENU_EL_PROFILE.getOrder()) {
             pagerAdapter = new ProfilePager(getSupportFragmentManager(), this);
-        } else if (position == NavigationDrawerFragment.MenuElement.MENU_EL_LOGOUT.getOrder()) {
+        } else if (position == MenuManager.MenuElement.MENU_EL_LOGOUT.getOrder()) {
             logout();
         }
-        Log.w("status", "salut batard, je te file ça : " + pagerAdapter);
-
 
         if (pagerAdapter != null) {
             FragmentManager fragmentManager = getFragmentManager();
             SliderBar sliderBar = new SliderBar();
             sliderBar.setPagerAdapter(pagerAdapter);
-
-            Log.w("status", "salut batard, je te file ça : " + pagerAdapter);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container, sliderBar)

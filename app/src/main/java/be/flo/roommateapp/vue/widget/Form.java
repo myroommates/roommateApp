@@ -2,32 +2,18 @@ package be.flo.roommateapp.vue.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.text.Editable;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.RoommateDTO;
 import be.flo.roommateapp.model.dto.technical.DTO;
-import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.StringUtil;
-import be.flo.roommateapp.model.util.annotation.NotNull;
-import be.flo.roommateapp.model.util.annotation.Pattern;
-import be.flo.roommateapp.model.util.annotation.Size;
 import be.flo.roommateapp.model.util.exception.MyException;
-import be.flo.roommateapp.vue.spinner.MultiSelectionSpinner;
-import be.flo.roommateapp.vue.spinner.SelectionWithOpenFieldSpinner;
-import be.flo.roommateapp.vue.spinner.SingleSelectionSpinner;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,7 +22,7 @@ import java.util.List;
 public class Form extends LinearLayout implements AdapterView.OnItemSelectedListener {
 
     private final DTO dto;
-    private final List<Field> viewHashMap = new ArrayList<>();
+    private final List<Field> fields = new ArrayList<>();
     private final Activity activity;
     //private EditText inputView=null;
     //private final String field;
@@ -76,7 +62,7 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
 
             addView(field);
 
-            viewHashMap.add(field);
+            this.fields.add(field);
         }
 
     }
@@ -86,7 +72,7 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
         boolean valid = true;
 
         // **** CONTROL ****
-        for (Field field : viewHashMap) {
+        for (Field field : fields) {
             if (!field.control()) {
                 valid = false;
             }
@@ -97,7 +83,7 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
         }
 
         // **** INSERT DATA ****
-        for (Field field : viewHashMap) {
+        for (Field field : fields) {
 
             Method method = dto.getClass().getMethod("set" + StringUtil.toFirstLetterUpper(field.getFieldProperties().getField().getName()), field.getFieldProperties().getField().getType());
             method.invoke(dto, field.getValue());
@@ -109,7 +95,7 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        for (Field field : viewHashMap) {
+        for (Field field : fields) {
 
             if (field.getFieldProperties().getInputView() instanceof Spinner &&
                     field.getFieldProperties().getInputView().equals(parent)) {
@@ -134,7 +120,7 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        for (Field field : viewHashMap) {
+        for (Field field : fields) {
 
             if (field.getFieldProperties().getInputView() instanceof Spinner &&
                     field.getFieldProperties().getInputView().equals(parent)) {
@@ -159,9 +145,17 @@ public class Form extends LinearLayout implements AdapterView.OnItemSelectedList
 
     public void setEnabled(boolean enabled) {
 
-        for (Field field : viewHashMap) {
+        for (Field field : fields) {
             field.setEnabled(enabled);
         }
     }
 
+    public Field getField(java.lang.reflect.Field name) {
+        for (Field field : fields) {
+            if (field.getFieldProperties().getField().equals(name)) {
+                return field;
+            }
+        }
+        return null;
+    }
 }

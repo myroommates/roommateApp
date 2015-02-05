@@ -22,6 +22,7 @@ import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.spinner.SelectionWithOpenFieldSpinner;
 import be.flo.roommateapp.vue.widget.DateView;
+import be.flo.roommateapp.vue.widget.Field;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,9 +42,6 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
 
     //field
     private EditText totalField;
-    private DateView dateView;
-    private EditText textDesc;
-    private SelectionWithOpenFieldSpinner categorySpinner;
     private CheckBox ckEqualRepartition;
     private Menu menu;
     private boolean initialize = true;
@@ -53,6 +51,9 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
     private List<ShoppingItemDTO> shoppingItemList;
 
     private List<Debtor> debtors = new ArrayList<>();
+    private Field dateField;
+    private Field descriptionField;
+    private SelectionWithOpenFieldSpinner categorySpinner;
 
     private class Debtor {
         private RoommateDTO roommateDTO;
@@ -70,6 +71,15 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
         //create activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ticket);
+
+        try {
+            builder();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void builder() throws NoSuchFieldException {
 
         //recover intent
         Intent intent = getIntent();
@@ -116,12 +126,12 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
         LinearLayout insertPoint = (LinearLayout) findViewById(R.id.insert_point);
 
         //build date
-        LinearLayout dateContainer = (LinearLayout) findViewById(R.id.date_container);
-        dateView = new DateView(this);
-        dateContainer.addView(dateView);
+        dateField = new Field(this, new Field.FieldProperties(TicketDTO.class.getDeclaredField("date"), R.string.g_date), ticket.getDate());
+        insertPoint.addView(dateField, 0);
 
         //description
-        textDesc = (EditText) findViewById(R.id.txt_desc);
+        descriptionField = new Field(this, new Field.FieldProperties(TicketDTO.class.getDeclaredField("description"), R.string.g_desc), ticket.getDescription());
+        insertPoint.addView(descriptionField, 1);
 
         //category
         LinearLayout categoryContainer = (LinearLayout) findViewById(R.id.category_container);
@@ -244,15 +254,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
     }
 
     private void insertValues() {
-        //date
-        if (ticket.getDate() != null) {
-            dateView.setDate(ticket.getDate());
-        }
 
-        //description
-        if (ticket.getDescription() != null) {
-            textDesc.setText(ticket.getDescription());
-        }
 
         //category
         if (ticket.getCategory() != null) {
@@ -377,16 +379,16 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
 
     @Override
     protected void save() {
-        try {
-            //TODO control
+
+        if (descriptionField.control() && dateField.control()) {
 
             //set date into dto
 
             //setDate
-            ticket.setDate(dateView.getDate());
+            ticket.setDate((Date) dateField.getValue());
 
             //set description
-            ticket.setDescription(textDesc.getText().toString());
+            ticket.setDescription((String) descriptionField.getValue());
 
             //set category
             ticket.setCategory(categorySpinner.getSelectedItem());
@@ -419,17 +421,13 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                 for (ShoppingItemDTO shoppingItemDTO : shoppingItemList) {
                     listShoppingItemBoughtIds += shoppingItemDTO.getId() + TICKET_LIST_ID_SHOPPING_ITEM_SEPARATION_SYMBOL;
                 }
+
+                //send request for bought article
+                Request requestForBought = new Request(this, getWebClientForShoppingItemBought(listShoppingItemBoughtIds));
+
+                //execute request
+                requestForBought.execute();
             }
-
-            //send request for bought article
-            Request requestForBought = new Request(this, getWebClientForShoppingItemBought(listShoppingItemBoughtIds));
-
-            //execute request
-            requestForBought.execute();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            displayErrorMessage(e.getMessage());
         }
     }
 

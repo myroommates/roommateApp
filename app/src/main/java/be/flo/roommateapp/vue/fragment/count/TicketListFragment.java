@@ -19,6 +19,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.activity.edit.EditTicketActivity;
+import be.flo.roommateapp.vue.fragment.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.TicketListAdapter;
 
 import java.util.ArrayList;
@@ -179,7 +180,7 @@ public class TicketListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.b_edit_from_count_resume:
 
-                Intent intent = new Intent(TicketListFragment.this.getActivity(), EditTicketActivity.class);
+                Intent intent = IntentBuilder.buildIntent(this, EditTicketActivity.class);
                 intent.putExtra(EditTicketActivity.TICKET_ID, adapter.getItem(info.position).getId());
                 startActivity(intent);
 
@@ -227,7 +228,7 @@ public class TicketListFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.b_add_ticket:
-                startActivity(new Intent(TicketListFragment.this.getActivity(), EditTicketActivity.class));
+                startActivity(IntentBuilder.buildIntent(this, EditTicketActivity.class));
                 return true;
             case R.id.b_refresh_ticket:
                 RefreshRequest request = new RefreshRequest();

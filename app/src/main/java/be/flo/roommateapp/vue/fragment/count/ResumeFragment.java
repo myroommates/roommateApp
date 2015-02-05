@@ -3,6 +3,7 @@ package be.flo.roommateapp.vue.fragment.count;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.*;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -82,13 +83,18 @@ public class ResumeFragment extends Fragment {
         double payed = 0.0, mustPay = 0.0;
 
         for (TicketDTO ticketDTO : Storage.getTicketList()) {
-            for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
-                if (ticketDTO.getPayerId().equals(roommateDTO.getId())) {
-                    payed += ticketDebtorDTO.getValue();
+            if (ticketDTO.getDebtorList() != null) {
+                for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
+                    if (ticketDTO.getPayerId().equals(roommateDTO.getId())) {
+                        payed += ticketDebtorDTO.getValue();
+                    }
+                    if (ticketDebtorDTO.getRoommateId().equals(roommateDTO.getId())) {
+                        mustPay += ticketDebtorDTO.getValue();
+                    }
                 }
-                if (ticketDebtorDTO.getRoommateId().equals(roommateDTO.getId())) {
-                    mustPay += ticketDebtorDTO.getValue();
-                }
+            } else {
+                //??
+                Log.e("ERROR " + this.getClass().getName(), "ticket " + ticketDTO.getId() + " doesn't have any debtor !! ");
             }
         }
         return payed - mustPay;
@@ -105,14 +111,19 @@ public class ResumeFragment extends Fragment {
             ResultDetail resultDetail = new ResultDetail(roommateDTO);
 
             for (TicketDTO ticketDTO : Storage.getTicketList()) {
-                for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
+                if (ticketDTO.getDebtorList() != null) {
+                    for (TicketDebtorDTO ticketDebtorDTO : ticketDTO.getDebtorList()) {
 
-                    if (ticketDTO.getPayerId().equals(roommateDTO.getId())) {
-                        resultDetail.payed += ticketDebtorDTO.getValue();
+                        if (ticketDTO.getPayerId().equals(roommateDTO.getId())) {
+                            resultDetail.payed += ticketDebtorDTO.getValue();
+                        }
+                        if (ticketDebtorDTO.getRoommateId().equals(roommateDTO.getId())) {
+                            resultDetail.mustPay += ticketDebtorDTO.getValue();
+                        }
                     }
-                    if (ticketDebtorDTO.getRoommateId().equals(roommateDTO.getId())) {
-                        resultDetail.mustPay += ticketDebtorDTO.getValue();
-                    }
+                } else {
+                    //??
+                    Log.e("ERROR " + this.getClass().getName(), "ticket " + ticketDTO.getId() + " doesn't have any debtor !! ");
                 }
             }
             resultDetail.resetToReceive = resultDetail.payed - resultDetail.mustPay;

@@ -2,9 +2,12 @@ package be.flo.roommateapp.vue.activity.edit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.RoommateDTO;
 import be.flo.roommateapp.model.dto.technical.DTO;
@@ -49,9 +52,41 @@ public class EditRoommateActivity extends AbstractEditActivity<RoommateDTO> {
                         new Field.FieldProperties(RoommateDTO.class.getDeclaredField("name"), R.string.g_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
                         new Field.FieldProperties(RoommateDTO.class.getDeclaredField("nameAbrv"), R.string.g_name_abrv),
                         new Field.FieldProperties(RoommateDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
+
+                final Field fieldName = form.getField(RoommateDTO.class.getDeclaredField("name"));
+                final Field fieldNameAbrv = form.getField(RoommateDTO.class.getDeclaredField("nameAbrv"));
+
+                ((EditText)fieldName.getFieldProperties().getInputView()).addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        String name = (String) fieldName.getValue();
+
+                        if(name==null || name.length()==0){
+                            fieldNameAbrv.setValue(null);
+                        }
+                        else if(name.length()>3){
+                            fieldNameAbrv.setValue(name);
+                        }
+                        else{
+                            fieldNameAbrv.setValue(name.substring(0,3));
+                        }
+                    }
+                });
+
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
+
 
             //and insert field into view
             ViewGroup insertPoint = (ViewGroup) findViewById(R.id.insert_point);
