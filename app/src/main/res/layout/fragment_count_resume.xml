@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="fill_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            style="@style/bg_element"
+        >
+
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/element"
+            >
+
+        <!-- error message-->
+        <include layout="@layout/error_message"/>
+
+        <!-- list content -->
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_roommate_insertion"
+                android:orientation="vertical"
+                >
+
+        </LinearLayout>
+
+
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/result_title_balance"
+                    />
+
+            <TableLayout android:id="@+id/balance_container"
+                         android:orientation="vertical"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:stretchColumns="1"
+                    >
+                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:orientation="horizontal"
+                        >
+
+                    <TextView
+                            android:layout_column="0"
+                            />
+                    <TextView
+                            android:layout_column="1"
+                            android:gravity="center"
+                            android:text="@string/result_balance_from"
+                            />
+                    <TextView
+                            android:layout_column="2"
+                            android:gravity="center"
+                            android:text="@string/result_balance_to"
+                            />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

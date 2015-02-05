@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:orientation="horizontal"
+        >
+
+    <FrameLayout
+            android:layout_column="0"
+            android:id="@+id/roommate_from"
+            style="@style/result_case"
+            >
+    </FrameLayout>
+
+    <TextView
+            android:layout_height="fill_parent"
+            android:layout_column="1"
+            android:id="@+id/text2"
+            style="@style/result_case"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+
+    <FrameLayout
+            android:layout_column="2"
+            android:id="@+id/roommate_to"
+            style="@style/result_case"
+            >
+    </FrameLayout>
+    <!--
+    <LinearLayout
+            style="@style/result_case"
+            android:background="@drawable/result_case_background"
+            android:layout_column="3"
+            android:adjustViewBounds="true"
+            >
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_agenda"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:adjustViewBounds="true"
+                />
+    </LinearLayout>
+    -->
+</TableRow>

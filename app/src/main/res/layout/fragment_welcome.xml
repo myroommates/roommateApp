@@ -1,0 +1,65 @@
+<ScrollView android:layout_height="fill_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            style="@style/bg_element"
+        >
+
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            style="@style/element"
+            >
+
+        <!-- error message-->
+        <include layout="@layout/error_message"/>
+
+        <Button android:id="@+id/welcome_add_ticket_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_add_ticket_btn"
+                style="@style/button"
+                />
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/welcome_dept_txt"/>
+            <TextView
+                    android:id="@+id/current_sold"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+        </LinearLayout>
+
+        <Button android:id="@+id/welcome_add_shopping_item_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_add_shopping_item_btn"
+                style="@style/button"
+                />
+
+        <!-- list content -->
+
+        <Button android:id="@+id/welcome_bought_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_bought_shopping_item"
+                style="@style/button"
+                />
+        <ListView
+                android:layout_width="fill_parent"
+                android:id="@+id/list_insertion"
+                android:choiceMode="multipleChoice"
+                android:layout_height="200dp"
+                >
+        </ListView>
+    </LinearLayout>
+
+
+</ScrollView>
