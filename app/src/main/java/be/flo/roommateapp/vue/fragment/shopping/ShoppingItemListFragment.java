@@ -48,6 +48,7 @@ public class ShoppingItemListFragment extends Fragment {
         //load animation for refresh button
         refreshAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.rotation);
         refreshAnimation.setRepeatCount(Animation.INFINITE);
+
     }
 
 
@@ -338,6 +339,7 @@ public class ShoppingItemListFragment extends Fragment {
         protected void onPreExecute() {
             view.findViewById(R.id.error_message_container).setVisibility(View.GONE);
             displayRefreshIcon(true);
+            Log.w("adapter","adapter into onPreExecute : "+adapter.getCount());
             adapter.clear();
         }
 

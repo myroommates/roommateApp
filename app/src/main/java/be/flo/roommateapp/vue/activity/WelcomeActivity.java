@@ -13,6 +13,7 @@ import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.HomeDTO;
 import be.flo.roommateapp.model.dto.LoginSuccessDTO;
 import be.flo.roommateapp.model.dto.RoommateDTO;
+import be.flo.roommateapp.model.dto.ShoppingItemDTO;
 import be.flo.roommateapp.model.service.AccountService;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.exception.MyException;
@@ -22,6 +23,7 @@ import be.flo.roommateapp.vue.dialog.DialogConstructor;
 import be.flo.roommateapp.vue.technical.AbstractActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,6 +83,7 @@ public class WelcomeActivity extends AbstractActivity {
 
 
         RoommateDTO currentRoommate = new RoommateDTO();
+        currentRoommate.setId(1L);
         currentRoommate.setAdmin(true);
         currentRoommate.setEmail("aa@zz.ee");
         currentRoommate.setIconColor(0F);
@@ -105,6 +108,18 @@ public class WelcomeActivity extends AbstractActivity {
         loginSuccessDTO.setHome(home);
 
         loginSuccessDTO.setAuthenticationKey("pokpokdsdfsdfsdfsdfx");
+
+        List<ShoppingItemDTO> shop = new ArrayList<>();
+        for(int i=0;i<2;i++){
+            ShoppingItemDTO s = new ShoppingItemDTO();
+            s.setId(Long.parseLong(i+""));
+            s.setCreationDate(new Date());
+            s.setCreatorId(currentRoommate.getId());
+            s.setHomeId(home.getId());
+            s.setDescription("article "+i);
+        }
+
+        loginSuccessDTO.setShoppingItems(shop);
 
         return loginSuccessDTO;
     }

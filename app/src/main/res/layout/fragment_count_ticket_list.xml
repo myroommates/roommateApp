@@ -1,4 +1,4 @@
-<ScrollView android:layout_height="fill_parent"
+<LinearLayout android:layout_height="fill_parent"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             style="@style/bg_element"
@@ -40,11 +40,10 @@
         <!-- list content -->
         <ListView
                 android:layout_width="fill_parent"
-                android:layout_height="400dp"
-                android:id="@+id/list_insertion"
-                android:layout_weight="6.98">
+                android:layout_height="match_parent"
+                android:id="@+id/list_insertion">
                 </ListView>
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>
