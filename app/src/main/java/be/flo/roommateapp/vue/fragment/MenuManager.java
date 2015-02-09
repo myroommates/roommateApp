@@ -68,6 +68,15 @@ public class MenuManager {
         public Class<? extends FragmentStatePagerAdapter> getPagerClass() {
             return pagerClass;
         }
+
+        public static SubMenuElement getSubMenuElementByPosition(int menuElementOrder, int subMenuElementOrder) {
+            for (MenuElement menuElement : MenuElement.values()) {
+                if (menuElement.getOrder() == menuElementOrder) {
+                    return menuElement.getSubMenuElements()[subMenuElementOrder];
+                }
+            }
+            return null;
+        }
     }
 
 
@@ -82,6 +91,26 @@ public class MenuManager {
         SHOPPING_LIST(0, R.string.nav_shopping_item, ShoppingItemListFragment.class),
 
         WELCOME(0, R.string.g_welcome, WelcomeFragment.class);
+
+        public Fragment getFragment(){
+            switch (this){
+
+                case ADMIN_ROOMMATE_LIST:
+                    return new RoommateFragment();
+                case COUNT_RESUME:
+                    return new ResumeFragment();
+                case COUNT_TICKET_LIST:
+                    return new TicketListFragment();
+                case PROFILE_MY_PROFILE:
+                    return new MyProfileFragment();
+                case SHOPPING_LIST:
+                    return new ShoppingItemListFragment();
+                case WELCOME:
+                    return new WelcomeFragment();
+            }
+            return null;
+        }
+
 
         private final int order;
         private final int name;
@@ -113,6 +142,7 @@ public class MenuManager {
         public Class<? extends Fragment> getFragmentClass() {
             return fragmentClass;
         }
+
     }
 
 

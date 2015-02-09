@@ -10,7 +10,9 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import be.flo.roommateapp.R;
 
@@ -23,7 +25,7 @@ import be.flo.roommateapp.R;
  * {@link #setViewPager(android.support.v4.view.ViewPager)} providing it the ViewPager this layout is being used for.
  * <p/>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
- * via {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)}. The
+ * via {@link (int...)} and {@link (int...)}. The
  * alternative is via the {@link be.flo.roommateapp.vue.technical.slidingBar.TabLayout.TabColorizer} interface which provides you complete control over
  * which color is used for any individual position.
  * <p/>
@@ -34,7 +36,7 @@ public class TabLayout extends HorizontalScrollView {
 
     /**
      * Allows complete control over the colors drawn in the tab layout. Set with
-     * {@link #setCustomTabColorizer(be.flo.roommateapp.vue.technical.slidingBar.TabLayout.TabColorizer)}.
+     * {@link (be.flo.roommateapp.vue.technical.slidingBar.TabLayout.TabColorizer)}.
      */
     public interface TabColorizer {
 
@@ -62,7 +64,7 @@ public class TabLayout extends HorizontalScrollView {
     private ViewPager mViewPager;
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
 
-    private final TabStrip mTabStrip;
+    private final ViewGroup mTabStrip;
 
     public TabLayout(Context context) {
         this(context, null);
@@ -82,7 +84,7 @@ public class TabLayout extends HorizontalScrollView {
 
         mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
 
-        mTabStrip = new TabStrip(context);
+        mTabStrip = new LinearLayout(context);//TabStrip(context);
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     }
 
@@ -93,26 +95,26 @@ public class TabLayout extends HorizontalScrollView {
      * {@link #setSelectedIndicatorColors(int...)} and {@link #setDividerColors(int...)} to achieve
      * similar effects.
      */
-    public void setCustomTabColorizer(TabColorizer tabColorizer) {
+    /*public void setCustomTabColorizer(TabColorizer tabColorizer) {
         mTabStrip.setCustomTabColorizer(tabColorizer);
     }
-
+*/
     /**
      * Sets the colors to be used for indicating the selected tab. These colors are treated as a
      * circular array. Providing one color will mean that all tabs are indicated with the same color.
      */
-    public void setSelectedIndicatorColors(int... colors) {
+    /*public void setSelectedIndicatorColors(int... colors) {
         mTabStrip.setSelectedIndicatorColors(colors);
     }
-
+*/
     /**
      * Sets the colors to be used for tab dividers. These colors are treated as a circular array.
      * Providing one color will mean that all tabs are indicated with the same color.
      */
-    public void setDividerColors(int... colors) {
+  /*  public void setDividerColors(int... colors) {
         mTabStrip.setDividerColors(colors);
     }
-
+*/
     /**
      * Set the {@link android.support.v4.view.ViewPager.OnPageChangeListener}. When using {@link be.flo.roommateapp.vue.technical.slidingBar.TabLayout} you are
      * required to set any {@link android.support.v4.view.ViewPager.OnPageChangeListener} through this method. This is so
@@ -251,7 +253,7 @@ public class TabLayout extends HorizontalScrollView {
                 return;
             }
 
-            mTabStrip.onViewPagerPageChanged(position, positionOffset);
+            //mTabStrip.onViewPagerPageChanged(position, positionOffset);
 
             View selectedTitle = mTabStrip.getChildAt(position);
             int extraOffset = (selectedTitle != null)
@@ -277,7 +279,7 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         public void onPageSelected(int position) {
             if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                mTabStrip.onViewPagerPageChanged(position, 0f);
+                //mTabStrip.onViewPagerPageChanged(position, 0f);
                 scrollToTab(position, 0);
             }
 

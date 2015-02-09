@@ -89,13 +89,21 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         }
 
         if (pagerAdapter != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            SliderBar sliderBar = new SliderBar();
-            sliderBar.setPagerAdapter(pagerAdapter);
 
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, sliderBar)
-                    .commit();
+            if(pagerAdapter.getCount()==1){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, MenuManager.MenuElement.getSubMenuElementByPosition(position,0).getFragment())
+                        .commit();
+            }
+            else {
+                SliderBar sliderBar = new SliderBar();
+                sliderBar.setPagerAdapter(pagerAdapter);
+
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, sliderBar)
+                        .commit();
+            }
         }
     }
 
