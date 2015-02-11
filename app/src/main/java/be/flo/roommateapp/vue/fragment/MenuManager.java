@@ -18,41 +18,42 @@ import be.flo.roommateapp.vue.pager.*;
 public class MenuManager {
 
     public static enum MenuElement {
-        MENU_EL_WELCOME(R.string.nav_drawer_welcome, 0, WelcomePager.class, SubMenuElement.WELCOME),
-        MENU_EL_COUNT(R.string.nav_drawer_count, 1, CountPager.class, SubMenuElement.COUNT_RESUME, SubMenuElement.COUNT_TICKET_LIST),
-        MENU_EL_SHOPPING(R.string.nav_drawer_shopping, 2, ShoppingPager.class, SubMenuElement.SHOPPING_LIST),
-        MENU_EL_CONFIG(R.string.nav_drawer_config, 3, ConfigPager.class, SubMenuElement.ADMIN_ROOMMATE_LIST),
-        MENU_EL_PROFILE(R.string.nav_drawer_my_profile, 4, ProfilePager.class, SubMenuElement.PROFILE_MY_PROFILE),
-        MENU_EL_LOGOUT(R.string.nav_drawer_logout, 5, null);
+        MENU_EL_WELCOME(R.string.nav_drawer_welcome, 0, SubMenuElement.WELCOME),
+        MENU_EL_COUNT(R.string.nav_drawer_count, 1, SubMenuElement.COUNT_RESUME, SubMenuElement.COUNT_TICKET_LIST),
+        MENU_EL_SHOPPING(R.string.nav_drawer_shopping, 2, SubMenuElement.SHOPPING_LIST),
+        MENU_EL_CONFIG(R.string.nav_drawer_config, 3, SubMenuElement.ADMIN_ROOMMATE_LIST),
+        MENU_EL_PROFILE(R.string.nav_drawer_my_profile, 4, SubMenuElement.PROFILE_MY_PROFILE),
+        MENU_EL_LOGOUT(R.string.nav_drawer_logout, 5);
 
         private final int name;
         private final int order;
         private final SubMenuElement[] subMenuElements;
-        private final Class<? extends FragmentStatePagerAdapter> pagerClass;
+        //private final Class<? extends FragmentStatePagerAdapter> pagerClass;
 
-        private MenuElement(int name, int order, Class<? extends FragmentStatePagerAdapter> pagerClass, SubMenuElement... subMenuElements) {
+        private MenuElement(int name, int order, SubMenuElement... subMenuElements) {
             this.name = name;
             this.order = order;
-            this.pagerClass = pagerClass;
+            //this.pagerClass = pagerClass;
             this.subMenuElements = subMenuElements;
         }
 
-        public static MenuElement getByClass(Class<?> pagerClass) {
-            for (MenuElement menuElement : values()) {
-                if (menuElement.pagerClass.equals(pagerClass)) {
-                    return menuElement;
-                } else {
-                    for (SubMenuElement subMenuElement : menuElement.subMenuElements) {
-                        if (subMenuElement.fragmentClass.equals(pagerClass)) {
+        /*
+                public static MenuElement getByClass(Class<?> pagerClass) {
+                    for (MenuElement menuElement : values()) {
+                        if (menuElement.pagerClass.equals(pagerClass)) {
                             return menuElement;
+                        } else {
+                            for (SubMenuElement subMenuElement : menuElement.subMenuElements) {
+                                if (subMenuElement.fragmentClass.equals(pagerClass)) {
+                                    return menuElement;
+                                }
+                            }
+
                         }
                     }
-
+                    return null;
                 }
-            }
-            return null;
-        }
-
+        */
         public int getName() {
             return name;
         }
@@ -64,15 +65,36 @@ public class MenuManager {
         public SubMenuElement[] getSubMenuElements() {
             return subMenuElements;
         }
-
+/*
         public Class<? extends FragmentStatePagerAdapter> getPagerClass() {
             return pagerClass;
         }
-
+*/
         public static SubMenuElement getSubMenuElementByPosition(int menuElementOrder, int subMenuElementOrder) {
             for (MenuElement menuElement : MenuElement.values()) {
                 if (menuElement.getOrder() == menuElementOrder) {
                     return menuElement.getSubMenuElements()[subMenuElementOrder];
+                }
+            }
+            return null;
+        }
+
+        public static MenuElement getByOrder(int position) {
+            for (MenuElement menuElement : MenuElement.values()) {
+                if (menuElement.getOrder() == position) {
+                    return menuElement;
+                }
+            }
+
+            return null;
+        }
+
+        public static MenuElement getByClass(Class<? extends Fragment> aClass) {
+            for (MenuElement menuElement : values()) {
+                for (SubMenuElement subMenuElement : menuElement.getSubMenuElements()) {
+                    if(subMenuElement.fragmentClass.equals(aClass)){
+                        return menuElement;
+                    }
                 }
             }
             return null;
@@ -92,8 +114,8 @@ public class MenuManager {
 
         WELCOME(0, R.string.g_welcome, WelcomeFragment.class);
 
-        public Fragment getFragment(){
-            switch (this){
+        public Fragment getFragment() {
+            switch (this) {
 
                 case ADMIN_ROOMMATE_LIST:
                     return new RoommateFragment();

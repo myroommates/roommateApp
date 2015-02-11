@@ -1,18 +1,17 @@
 package be.flo.roommateapp.vue.activity;
 
-import android.app.FragmentManager;
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.widget.Toast;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.vue.fragment.MenuManager;
 import be.flo.roommateapp.vue.fragment.NavigationDrawerFragment;
 import be.flo.roommateapp.vue.pager.*;
-import be.flo.roommateapp.vue.technical.slidingBar.SliderBar;
 
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -20,7 +19,13 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     public static final String INTENT_TAB = "intent_tab";
     public static final String INTENT_MENU = "intent_menu";
 
-    NavigationDrawerFragment mNavigationDrawerFragment;
+    private Integer lastMenu = null;
+    private Integer lastTab = null;
+    private Integer lastPositionNaviabled = null;
+
+
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private Pager pager;
 
 
     @Override
@@ -28,16 +33,35 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         //sliderBar = new SliderBar();
         super.onCreate(savedInstanceState);
+
+        //used to display the correct tab after pause
+        if (savedInstanceState != null) {
+            Toast.makeText(this, "SavedInstance : " + savedInstanceState.getInt(INTENT_MENU, -1) + "/" + savedInstanceState.getInt(INTENT_TAB, -1), Toast.LENGTH_SHORT).show();
+            if (savedInstanceState.getInt(INTENT_TAB, -1) != -1) {
+                lastTab = savedInstanceState.getInt(INTENT_TAB);
+            }
+            if (savedInstanceState.getInt(INTENT_MENU, -1) != -1) {
+                lastMenu = savedInstanceState.getInt(INTENT_MENU);
+            }
+        }
+
         setContentView(R.layout.activity_main);
 
         //recover roommateDTO id
         Intent i = getIntent();
 
-        Log.w("menu","MENU : "+i.getIntExtra(INTENT_MENU,-1));
-        Log.w("menu","TAB : "+i.getIntExtra(INTENT_TAB,-1));
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        if (i.getIntExtra(INTENT_MENU,-1) != -1) {
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        if (i.getIntExtra(INTENT_MENU, -1) != -1) {
+            lastMenu = i.getIntExtra(INTENT_MENU, -1);
+            if (i.getIntExtra(INTENT_TAB, -1) != -1) {
+                lastTab = i.getIntExtra(INTENT_TAB, -1);
+            }
             mNavigationDrawerFragment.setPosition(i.getIntExtra(INTENT_MENU, -1));
             i.removeExtra(INTENT_MENU);
         }
@@ -45,22 +69,8 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     }
 
     @Override
-    protected void onResume() {
-        Log.w("status", "onResume");
-        super.onResume();
-    }
-
-    @Override
     protected void onStart() {
-
-        Log.w("status", "onStart");
         super.onStart();
-
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //reload data is needed
         if (!Storage.testStorage()) {
@@ -70,40 +80,42 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Log.w("status", "onNavigationDrawerItemSelected:" + position);
+        lastPositionNaviabled = position;
+
         // update the main content by replacing fragments
-        PagerAdapter pagerAdapter = null;
-
-        if (position == MenuManager.MenuElement.MENU_EL_WELCOME.getOrder()) {
-            pagerAdapter = new WelcomePager(getSupportFragmentManager(), this);
-        } else if (position == MenuManager.MenuElement.MENU_EL_COUNT.getOrder()) {
-            pagerAdapter = new CountPager(getSupportFragmentManager(), this);
-        } else if (position == MenuManager.MenuElement.MENU_EL_SHOPPING.getOrder()) {
-            pagerAdapter = new ShoppingPager(getSupportFragmentManager(), this);
-        } else if (position == MenuManager.MenuElement.MENU_EL_CONFIG.getOrder()) {
-            pagerAdapter = new ConfigPager(getSupportFragmentManager(), this);
-        } else if (position == MenuManager.MenuElement.MENU_EL_PROFILE.getOrder()) {
-            pagerAdapter = new ProfilePager(getSupportFragmentManager(), this);
-        } else if (position == MenuManager.MenuElement.MENU_EL_LOGOUT.getOrder()) {
+        if (position == MenuManager.MenuElement.MENU_EL_LOGOUT.getOrder()) {
             logout();
+        } else {
+            if (MenuManager.MenuElement.getByOrder(position).getSubMenuElements().length == 1) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, MenuManager.MenuElement.getSubMenuElementByPosition(position, 0).getFragment())
+                        .commit();
+                pager = null;
+            } else {
+                //TODO add tab position
+                if (lastMenu != null && lastMenu == position && lastTab != null) {
+                    pager = Pager.newInstance(position, lastTab);
+                    lastTab = null;
+                } else {
+                    pager = Pager.newInstance(position, null);
+                }
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, pager)
+                        .commit();
+            }
         }
+    }
 
-        if (pagerAdapter != null) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (pager != null) {
+            outState.putInt(INTENT_TAB, pager.getCurrentPosition());
 
-            if(pagerAdapter.getCount()==1){
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, MenuManager.MenuElement.getSubMenuElementByPosition(position,0).getFragment())
-                        .commit();
-            }
-            else {
-                SliderBar sliderBar = new SliderBar();
-                sliderBar.setPagerAdapter(pagerAdapter);
-
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, sliderBar)
-                        .commit();
-            }
+        }
+        if (lastPositionNaviabled != null) {
+            outState.putInt(INTENT_MENU, lastPositionNaviabled);
         }
     }
 

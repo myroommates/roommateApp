@@ -56,7 +56,7 @@ public class WelcomeActivity extends AbstractActivity {
             Storage.store(this, generateFakeData());
             startActivity(new Intent(WelcomeActivity.this, MAIN_ACTIVITY));
         } else {
-            if (!ni.isConnected() || !ni.isAvailable()) {
+            if (false){//!ni.isConnected() || !ni.isAvailable()) {
                 if (DEV_MODE) {
                     Storage.store(this, generateFakeData());
                     startActivity(new Intent(WelcomeActivity.this, MAIN_ACTIVITY));
