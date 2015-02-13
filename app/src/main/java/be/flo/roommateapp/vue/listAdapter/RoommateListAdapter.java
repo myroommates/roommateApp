@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.RoommateDTO;
-import be.flo.roommateapp.model.util.Storage;
-import be.flo.roommateapp.model.util.StringUtil;
 import be.flo.roommateapp.model.util.UserIcon;
 
 import java.util.List;
@@ -26,7 +24,7 @@ public class RoommateListAdapter extends ArrayAdapter<RoommateDTO> {
 
 
     public RoommateListAdapter(Context context, List<RoommateDTO> items) {
-        super(context, R.layout.list_element_roommate, items);
+        super(context, R.layout.list_element_admin_roommate, items);
         this.context = context;
         this.items = items;
     }
@@ -39,7 +37,7 @@ public class RoommateListAdapter extends ArrayAdapter<RoommateDTO> {
         MenuElement element = new MenuElement(dto);
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(R.layout.list_element_roommate, parent, false);
+        convertView = inflater.inflate(R.layout.list_element_admin_roommate, parent, false);
         
         //set text
         ((TextView) convertView.findViewById(R.id.text_email)).setText(dto.getEmail());

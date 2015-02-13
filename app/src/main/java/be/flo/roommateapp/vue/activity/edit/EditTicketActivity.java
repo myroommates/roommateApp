@@ -407,8 +407,6 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                 }
             }
 
-            Log.e("ticket", ticket + "");
-
             //send request
             Request request = new Request(this, getWebClient());
 

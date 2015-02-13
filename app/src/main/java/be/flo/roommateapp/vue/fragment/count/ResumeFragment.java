@@ -1,12 +1,15 @@
 package be.flo.roommateapp.vue.fragment.count;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.ListTicketDTO;
@@ -20,6 +23,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.listAdapter.BalanceListAdapter;
+import be.flo.roommateapp.vue.technical.navigation.MenuManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +35,23 @@ public class ResumeFragment extends Fragment {
 
     private View view;
     private BalanceListAdapter adapter = null;
+    private Animation refreshAnimation;
+    ViewGroup container;
+    private Menu menu;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        //load animation for refresh button
+        refreshAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.rotation);
+        refreshAnimation.setRepeatCount(Animation.INFINITE);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.container = container;
 
         setHasOptionsMenu(true);
 
@@ -44,41 +62,57 @@ public class ResumeFragment extends Fragment {
 
         adapter = new BalanceListAdapter(this.getActivity(), Storage.getRoommateList());
 
-        //create the adapter
-        LinearLayout listContent = (LinearLayout) view.findViewById(R.id.list_roommate_insertion);
-        for (RoommateDTO roommate : Storage.getRoommateList()) {
-            listContent.addView(generateRoomateView(roommate, inflater, container));
-        }
-
-        computeResult(inflater);
+        draw();
 
         return view;
     }
 
-    private View generateRoomateView(RoommateDTO roommate, LayoutInflater inflater, ViewGroup container) {
+    private void draw() {
 
-        View convertView = inflater.inflate(R.layout.list_element_balance, container, false);
+        LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        double difference = computeBalance(roommate);
+        //create the adapter
+        LinearLayout listContent = (LinearLayout) view.findViewById(R.id.list_roommate_insertion);
+        for (RoommateDTO roommate : Storage.getRoommateList()) {
+            listContent.addView(generateRoommateView(roommate, inflater, container));
+        }
+
+        computeResult(inflater);
+
+    }
+
+    private void clear(LayoutInflater inflater) {
+        ((LinearLayout) view.findViewById(R.id.how_to_resolve_container)).removeAllViews();
+        ((LinearLayout) view.findViewById(R.id.list_roommate_insertion)).removeAllViews();
+    }
+
+    private View generateRoommateView(RoommateDTO roommate, LayoutInflater inflater, ViewGroup container) {
+
+        View convertView = inflater.inflate(R.layout.list_element_count_balance, container, false);
+
+        Values values = computeBalance(roommate);
 
         //set text
-        ((TextView) convertView.findViewById(R.id.text1)).setText(roommate.getString());
-        ((TextView) convertView.findViewById(R.id.text_value)).setText(StringUtil.toDouble(difference) + Storage.getHome().getMoneySymbol());
-        if (difference > 0) {
-            ((TextView) convertView.findViewById(R.id.text_value)).setTextColor(this.getResources().getColor(R.color.positive_value));
-        } else if (difference < 0) {
-            ((TextView) convertView.findViewById(R.id.text_value)).setTextColor(this.getResources().getColor(R.color.negative_value));
+        ((TextView) convertView.findViewById(R.id.text3)).setText(StringUtil.toDouble(values.balance) + Storage.getHome().getMoneySymbol());
+        if (values.balance > 0) {
+            ((TextView) convertView.findViewById(R.id.text3)).setTextColor(getResources().getColor(R.color.positive_value));
+        } else if (values.balance < 0) {
+            ((TextView) convertView.findViewById(R.id.text3)).setTextColor(getResources().getColor(R.color.negative_value));
         }
+
+        ((TextView) convertView.findViewById(R.id.text1)).setText(StringUtil.toDouble(values.payed) + Storage.getHome().getMoneySymbol());
+        ((TextView) convertView.findViewById(R.id.text2)).setText(StringUtil.toDouble(values.dept) + Storage.getHome().getMoneySymbol());
+
 
         //generate icon
         View userIconView = UserIcon.generateUserIcon(getActivity(), roommate);
 
-        ((ViewGroup) convertView.findViewById(R.id.icon_content)).addView(userIconView, 0);
+        ((ViewGroup) convertView.findViewById(R.id.content)).addView(userIconView, 0);
 
         return convertView;
     }
 
-    private double computeBalance(RoommateDTO roommateDTO) {
+    private Values computeBalance(RoommateDTO roommateDTO) {
 
         double payed = 0.0, mustPay = 0.0;
 
@@ -97,7 +131,19 @@ public class ResumeFragment extends Fragment {
                 Log.e("ERROR " + this.getClass().getName(), "ticket " + ticketDTO.getId() + " doesn't have any debtor !! ");
             }
         }
-        return payed - mustPay;
+        return new Values(payed, mustPay);
+    }
+
+    private static class Values {
+        private double payed;
+        private double dept;
+        private double balance;
+
+        public Values(double payed, double dept) {
+            this.payed = payed;
+            this.dept = dept;
+            balance = payed - dept;
+        }
     }
 
     //  getActivity().getActionBar().setTitle(R.string.menu_result);
@@ -168,14 +214,14 @@ public class ResumeFragment extends Fragment {
 
         for (Balance balance : balanceList) {
             //for each field : create a view and insert it
-            View listElement = inflater.inflate(R.layout.list_element_result_balance, null);
+            View listElement = inflater.inflate(R.layout.list_element_count_how_to_resolve, null);
 
             ((ViewGroup) listElement.findViewById(R.id.roommate_from)).addView(UserIcon.generateUserIcon(getActivity(), balance.from, false));
             ((ViewGroup) listElement.findViewById(R.id.roommate_to)).addView(UserIcon.generateUserIcon(getActivity(), balance.to, false));
             ((TextView) listElement.findViewById(R.id.text2)).setText(StringUtil.toDouble(balance.value) + "" + Storage.getHome().getMoneySymbol());
 
 
-            ((TableLayout) view.findViewById(R.id.balance_container)).addView(listElement);
+            ((LinearLayout) view.findViewById(R.id.how_to_resolve_container)).addView(listElement);
         }
 
     }
@@ -231,12 +277,14 @@ public class ResumeFragment extends Fragment {
 
         assert getActivity().getActionBar() != null;
 
-        getActivity().getActionBar().setTitle(R.string.nav_count_resume);
+        getActivity().getActionBar().setTitle(MenuManager.SubMenuElement.getByClass(this.getClass()).getName());
 
         menu.clear();
 
+        this.menu = menu;
+
         MenuInflater menuInflater = this.getActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.menu_count_balance, menu);
+        menuInflater.inflate(R.menu.menu_count_resume, menu);
     }
 
     @Override
@@ -252,6 +300,26 @@ public class ResumeFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void displayRefreshIcon(boolean display) {
+
+        if (menu.findItem(R.id.b_refresh_roommate) != null) {
+            if (display) {
+
+                // create animation and add to the refresh item
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                ImageView iv = (ImageView) inflater.inflate(R.layout.loading_icon, null);
+                menu.findItem(R.id.b_refresh_roommate).setActionView(iv);
+                iv.startAnimation(refreshAnimation);
+            } else {
+                if (menu.findItem(R.id.b_refresh_roommate).getActionView() != null) {
+                    menu.findItem(R.id.b_refresh_roommate).getActionView().clearAnimation();
+                    menu.findItem(R.id.b_refresh_roommate).setActionView(null);
+                }
+            }
+        }
+    }
+
 
     /**
      * Refresh task.
@@ -278,18 +346,22 @@ public class ResumeFragment extends Fragment {
         @Override
         protected void onPostExecute(Void result) {
 
+            displayRefreshIcon(false);
+
             if (errorMessage != null) {
                 view.findViewById(R.id.error_message_container).setVisibility(View.VISIBLE);
                 ((TextView) view.findViewById(R.id.error_message)).setText(errorMessage);
             } else {
                 Storage.setTickets(listTicketDTO.getList());
-                //computeResult();
+                draw();
             }
         }
 
         @Override
         protected void onPreExecute() {
             view.findViewById(R.id.error_message_container).setVisibility(View.GONE);
+            displayRefreshIcon(true);
+            clear(ResumeFragment.this.getActivity().getLayoutInflater());
         }
 
         @Override

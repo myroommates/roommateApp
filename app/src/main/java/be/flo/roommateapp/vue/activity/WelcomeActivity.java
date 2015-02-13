@@ -10,10 +10,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 import be.flo.roommateapp.R;
-import be.flo.roommateapp.model.dto.HomeDTO;
-import be.flo.roommateapp.model.dto.LoginSuccessDTO;
-import be.flo.roommateapp.model.dto.RoommateDTO;
-import be.flo.roommateapp.model.dto.ShoppingItemDTO;
+import be.flo.roommateapp.model.dto.*;
 import be.flo.roommateapp.model.service.AccountService;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.exception.MyException;
@@ -87,17 +84,42 @@ public class WelcomeActivity extends AbstractActivity {
         currentRoommate.setAdmin(true);
         currentRoommate.setEmail("aa@zz.ee");
         currentRoommate.setIconColor(0F);
-        currentRoommate.setId(1L);
         currentRoommate.setKeepSessionOpen(true);
         currentRoommate.setLanguageCode("en");
         currentRoommate.setName("Florian");
         currentRoommate.setNameAbrv("Flo");
         currentRoommate.setPassword("pqpskdkd");
 
+
         loginSuccessDTO.setCurrentRoommate(currentRoommate);
 
         List<RoommateDTO> rommates = new ArrayList<>();
         rommates.add(currentRoommate);
+
+        //create other roommate
+        for(int i = 0;i<3;i++){
+            RoommateDTO roommate = new RoommateDTO();
+            roommate.setId((long) (i+2));
+            roommate.setAdmin(false);
+            roommate.setEmail("aa@zz"+i+".ee");
+            roommate.setIconColor(i*15F);
+            roommate.setKeepSessionOpen(true);
+            roommate.setLanguageCode("en");
+            if(i==0){
+                roommate.setName("Coco");
+                roommate.setNameAbrv("Coc");
+            }
+            else if(i==1){
+                roommate.setName("Coco");
+                roommate.setNameAbrv("Coc");
+            }
+            else if(i==2){
+                roommate.setName("Popol");
+                roommate.setNameAbrv("Pop");
+            }
+            roommate.setPassword("pqpskdkd");
+            rommates.add(roommate);
+        }
 
         loginSuccessDTO.setRoommates(rommates);
 
@@ -109,6 +131,7 @@ public class WelcomeActivity extends AbstractActivity {
 
         loginSuccessDTO.setAuthenticationKey("pokpokdsdfsdfsdfsdfx");
 
+        //build list shopping
         List<ShoppingItemDTO> shop = new ArrayList<>();
         for(int i=0;i<2;i++){
             ShoppingItemDTO s = new ShoppingItemDTO();
@@ -120,6 +143,27 @@ public class WelcomeActivity extends AbstractActivity {
         }
 
         loginSuccessDTO.setShoppingItems(shop);
+
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+
+        //build list ticket
+        for(int i=1;i<10;i++){
+            TicketDTO ticketDTO = new TicketDTO();
+            ticketDTO.setId((long) i);
+            ticketDTO.setDescription("Ticket " + i);
+            ticketDTO.setCategory(((i>5)?"Course":"Sortie"));
+            ticketDTO.setDate(new Date());
+            ticketDTO.setPayerId(1L);
+            for(int j=1;j<5;j++){
+                TicketDebtorDTO ticketDebtorDTO = new TicketDebtorDTO();
+                ticketDebtorDTO.setRoommateId((long) j);
+                ticketDebtorDTO.setValue(5.9);
+                ticketDTO.addTicketDebtor(ticketDebtorDTO);
+            }
+            ticketDTOs.add(ticketDTO);
+
+        }
+        loginSuccessDTO.setTickets(ticketDTOs);
 
         return loginSuccessDTO;
     }

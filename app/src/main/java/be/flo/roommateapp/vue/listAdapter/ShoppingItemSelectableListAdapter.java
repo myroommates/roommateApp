@@ -23,7 +23,7 @@ public class ShoppingItemSelectableListAdapter extends ArrayAdapter<ShoppingItem
     private Context context;
 
     public ShoppingItemSelectableListAdapter(Context context, List<ShoppingItemDTO> shoppingItemDTOs) {
-        super(context, R.layout.list_element_balance, convert(shoppingItemDTOs));
+        super(context, R.layout.list_element_count_balance, convert(shoppingItemDTOs));
         this.context = context;
     }
 
@@ -46,7 +46,7 @@ public class ShoppingItemSelectableListAdapter extends ArrayAdapter<ShoppingItem
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
         //load layout
-        convertView = inflater.inflate(R.layout.list_element_shopping_item_selectable, parent, false);
+        convertView = inflater.inflate(R.layout.list_element_welcome_shopping_item_selectable, parent, false);
 
         //build checkbox
         CheckBox checkBox = (CheckBox) convertView.findViewById(R.id.shopping_item_bought);

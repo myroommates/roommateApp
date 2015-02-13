@@ -21,8 +21,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.activity.edit.EditRoommateActivity;
-import be.flo.roommateapp.vue.fragment.IntentBuilder;
-import be.flo.roommateapp.vue.listAdapter.BalanceListAdapter;
+import be.flo.roommateapp.vue.technical.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.RoommateListAdapter;
 
 /**

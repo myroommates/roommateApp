@@ -1,17 +1,14 @@
 package be.flo.roommateapp.vue.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.Toast;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.util.Storage;
-import be.flo.roommateapp.vue.fragment.MenuManager;
-import be.flo.roommateapp.vue.fragment.NavigationDrawerFragment;
-import be.flo.roommateapp.vue.pager.*;
+import be.flo.roommateapp.vue.technical.navigation.MenuManager;
+import be.flo.roommateapp.vue.technical.navigation.NavigationDrawerFragment;
+import be.flo.roommateapp.vue.technical.navigation.Pager;
 
 
 public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -36,7 +33,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         //used to display the correct tab after pause
         if (savedInstanceState != null) {
-            Toast.makeText(this, "SavedInstance : " + savedInstanceState.getInt(INTENT_MENU, -1) + "/" + savedInstanceState.getInt(INTENT_TAB, -1), Toast.LENGTH_SHORT).show();
             if (savedInstanceState.getInt(INTENT_TAB, -1) != -1) {
                 lastTab = savedInstanceState.getInt(INTENT_TAB);
             }
@@ -47,9 +43,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
 
         setContentView(R.layout.activity_main);
 
-        //recover roommateDTO id
-        Intent i = getIntent();
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -57,6 +50,8 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        //recover roommateDTO id
+        Intent i = getIntent();
         if (i.getIntExtra(INTENT_MENU, -1) != -1) {
             lastMenu = i.getIntExtra(INTENT_MENU, -1);
             if (i.getIntExtra(INTENT_TAB, -1) != -1) {
@@ -92,7 +87,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                         .commit();
                 pager = null;
             } else {
-                //TODO add tab position
                 if (lastMenu != null && lastMenu == position && lastTab != null) {
                     pager = Pager.newInstance(position, lastTab);
                     lastTab = null;

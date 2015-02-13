@@ -101,6 +101,13 @@
         <item>Roommate</item>
     </string-array>
 
+    <!-- count -->
+    <string name="count_resume_dept">Dept</string>
+    <string name="count_resume_difference">Difference</string>
+    <string name="count_resume_payed">Payed</string>
+    <string name="count_how_to_resolve_title">How to resolve</string>
+    <string name="count_resume_title">Resume</string>
+
 
     <string name="create_account_title">Create account</string>
     <string name="listroomate_title">List of roommate</string>
@@ -113,8 +120,8 @@
     <string name="logout">Logout</string>
     <string name="roommate_create">Create a new roommate</string>
     <string name="prayers">Prayers</string>
-    <string name="result_balance_from">...must pays</string>
-    <string name="result_balance_to">...to</string>
+    <string name="result_balance_from">must pay</string>
+    <string name="result_balance_to">to</string>
     <string name="result_title_details">Details</string>
     <string name="result_title_balance">Who must pay what?</string>
     <string name="payed">Payed</string>

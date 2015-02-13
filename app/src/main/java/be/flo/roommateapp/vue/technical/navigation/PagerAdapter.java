@@ -1,21 +1,20 @@
-package be.flo.roommateapp.vue.technical;
+package be.flo.roommateapp.vue.technical.navigation;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import be.flo.roommateapp.vue.fragment.MenuManager;
 
 /**
  * Created by florian on 8/02/15.
  */
-public class MyPagerAdapter extends FragmentStatePagerAdapter {
+public class PagerAdapter extends FragmentStatePagerAdapter {
 
     MenuManager.MenuElement menuElement;
     Activity activity;
     int tabSelected;
 
-    public MyPagerAdapter(Activity activity,MenuManager.MenuElement menuElement, FragmentManager fm) {
+    public PagerAdapter(Activity activity, MenuManager.MenuElement menuElement, FragmentManager fm) {
         super(fm);
         this.menuElement= menuElement;
         this.activity=activity;

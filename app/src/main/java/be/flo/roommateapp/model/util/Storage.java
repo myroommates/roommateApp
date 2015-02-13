@@ -26,8 +26,6 @@ public class Storage {
 
     public static void store(Context context, LoginSuccessDTO loginSuccessDTO) {
 
-        Log.i("Storage", "loginSuccessDTO:" + loginSuccessDTO);
-
         currentRoommate = loginSuccessDTO.getCurrentRoommate();
         setRoommate(loginSuccessDTO.getRoommates());
         home = loginSuccessDTO.getHome();
@@ -253,8 +251,6 @@ public class Storage {
         //convert h
         h=h/360;
 
-        Log.e("iconFon : ","    hsl : "+h+"/"+s+"/"+l);
-
         if (s < 0.0f || s > 1.0f) {
             String message = "Color parameter outside of expected range - Saturation (" + s + ")";
             throw new IllegalArgumentException(message);
@@ -283,9 +279,6 @@ public class Storage {
         int b = (int) (255 * Math.max(0, HueToRGB(p, q, h - (1.0f / 3.0f))));
 
         int alphaInt = (int) (255 * alpha);
-
-        Log.e("iconFon : ","    rgb : "+r+"/"+g+"/"+b);
-
         return Color.rgb(r, g, b);
 
         //return (alphaInt << 24) + (r << 16) + (g << 8) + (b);

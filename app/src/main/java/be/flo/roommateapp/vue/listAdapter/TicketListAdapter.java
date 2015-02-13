@@ -30,7 +30,7 @@ public class TicketListAdapter extends ArrayAdapter<TicketDTO> {
     private Context context;
 
     public TicketListAdapter(Context context, List<TicketDTO> items) {
-        super(context, R.layout.list_element_ticket, items);
+        super(context, R.layout.list_element_count_ticket, items);
         this.context = context;
         this.items = items;
     }
@@ -43,7 +43,7 @@ public class TicketListAdapter extends ArrayAdapter<TicketDTO> {
         MenuElement element = new MenuElement(dto);
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(R.layout.list_element_ticket, parent, false);
+        convertView = inflater.inflate(R.layout.list_element_count_ticket, parent, false);
 
         //Compute global value
         double globalValue = 0.0;

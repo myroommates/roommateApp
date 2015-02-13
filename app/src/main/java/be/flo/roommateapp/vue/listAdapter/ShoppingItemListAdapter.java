@@ -24,7 +24,7 @@ public class ShoppingItemListAdapter extends ArrayAdapter<ShoppingItemDTO> {
     private Context context;
 
     public ShoppingItemListAdapter(Context context, List<ShoppingItemDTO> items) {
-        super(context, R.layout.list_element_balance, items);
+        super(context, R.layout.list_element_count_balance, items);
         this.context = context;
         this.items = items;
     }

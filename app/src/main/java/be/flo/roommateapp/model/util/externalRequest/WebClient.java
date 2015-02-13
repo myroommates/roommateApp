@@ -10,6 +10,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import com.google.gson.*;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -27,7 +28,7 @@ import java.util.Date;
 public class WebClient<U extends DTO> {
 
     //main url of the service
-    //public final static String TARGET_URL = "http://192.168.1.8:9000/";
+    //public final static String TARGET_URL = "http://192.168.1.4:9000/";
     //main url of the service - office
     //public final static String TARGET_URL = "http://192.168.18.190:9000/";
     //  test
@@ -124,7 +125,6 @@ public class WebClient<U extends DTO> {
 
             //build the url by requested by
             final HttpRequestBase httpRequest;
-
             switch (request.getRequestType()) {
                 case GET:
                     httpRequest = new HttpGet(urlString);
@@ -150,7 +150,7 @@ public class WebClient<U extends DTO> {
             if (dto != null) {
                 if (httpRequest instanceof HttpEntityEnclosingRequestBase) {
                     String json = gson.toJson(dto);
-                    StringEntity params = new StringEntity(json);
+                    StringEntity params = new StringEntity(json,"UTF-8");
                     ((HttpEntityEnclosingRequestBase) httpRequest).setEntity(params);
                     httpRequest.addHeader("content-type", "application/json");
                 } else {

@@ -18,10 +18,8 @@ import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
-import be.flo.roommateapp.vue.activity.MainActivity;
 import be.flo.roommateapp.vue.activity.edit.EditShoppingItemActivity;
-import be.flo.roommateapp.vue.fragment.IntentBuilder;
-import be.flo.roommateapp.vue.fragment.NavigationDrawerFragment;
+import be.flo.roommateapp.vue.technical.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.ShoppingItemListAdapter;
 
 import java.util.ArrayList;

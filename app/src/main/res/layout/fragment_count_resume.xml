@@ -16,53 +16,121 @@
         <!-- error message-->
         <include layout="@layout/error_message"/>
 
-        <!-- list content -->
+
+        <!-- resume title -->
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/count_resume_title"
+                style="@style/title_h3"
+                />
+
+        <!-- resume content -->
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_roommate_insertion"
                 android:orientation="vertical"
+                android:layout_marginRight="20dp"
                 >
+
+            <!-- resume header -->
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        />
+
+                <TextView
+                        android:text="@string/count_resume_payed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        />
+
+                <TextView
+                        android:text="@string/count_resume_dept"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        />
+
+                <TextView
+                        android:text="@string/count_resume_difference"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="right"
+                        />
+
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/list_roommate_insertion"
+                        android:orientation="vertical"
+                        >
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
 
-        <LinearLayout android:orientation="vertical"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content">
+        <!-- how to resolve title -->
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/count_how_to_resolve_title"
+                style="@style/title_h3"
+                />
 
-            <TextView
-                    android:layout_width="fill_parent"
+        <!-- how to resolve header -->
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="20dp"
+                >
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        />
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/result_balance_from"
+                        android:gravity="center_horizontal"
+                        />
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/result_balance_to"
+                        android:gravity="center_horizontal"
+                        />
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/result_title_balance"
-                    />
-
-            <TableLayout android:id="@+id/balance_container"
-                         android:orientation="vertical"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:stretchColumns="1"
+                    android:orientation="vertical"
+                    android:id="@+id/how_to_resolve_container"
                     >
-                <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:orientation="horizontal"
-                        >
-
-                    <TextView
-                            android:layout_column="0"
-                            />
-                    <TextView
-                            android:layout_column="1"
-                            android:gravity="center"
-                            android:text="@string/result_balance_from"
-                            />
-                    <TextView
-                            android:layout_column="2"
-                            android:gravity="center"
-                            android:text="@string/result_balance_to"
-                            />
-                </TableRow>
-
-            </TableLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -28,7 +28,7 @@ public class BalanceListAdapter extends ArrayAdapter<RoommateDTO> {
 
 
     public BalanceListAdapter(Context context, List<RoommateDTO> items) {
-        super(context, R.layout.list_element_balance, items);
+        super(context, R.layout.list_element_count_balance, items);
         this.context = context;
         this.items = items;
     }
@@ -65,7 +65,7 @@ public class BalanceListAdapter extends ArrayAdapter<RoommateDTO> {
         MenuElement element = new MenuElement(dto);
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        convertView = inflater.inflate(R.layout.list_element_balance, parent, false);
+        convertView = inflater.inflate(R.layout.list_element_count_balance, parent, false);
 
         double difference = computeBalance(dto);
 

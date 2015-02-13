@@ -1,8 +1,6 @@
-package be.flo.roommateapp.vue.fragment;
+package be.flo.roommateapp.vue.technical.navigation;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.vue.fragment.Welcome.WelcomeFragment;
 import be.flo.roommateapp.vue.fragment.admin.RoommateFragment;
@@ -10,7 +8,6 @@ import be.flo.roommateapp.vue.fragment.count.ResumeFragment;
 import be.flo.roommateapp.vue.fragment.count.TicketListFragment;
 import be.flo.roommateapp.vue.fragment.profile.MyProfileFragment;
 import be.flo.roommateapp.vue.fragment.shopping.ShoppingItemListFragment;
-import be.flo.roommateapp.vue.pager.*;
 
 /**
  * Created by florian on 5/02/15.

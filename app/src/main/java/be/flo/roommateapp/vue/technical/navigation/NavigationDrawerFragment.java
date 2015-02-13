@@ -1,7 +1,6 @@
-package be.flo.roommateapp.vue.fragment;
+package be.flo.roommateapp.vue.technical.navigation;
 
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.support.v4.app.Fragment;

@@ -1,33 +1,19 @@
 package be.flo.roommateapp.vue.activity.edit;
 
-import android.app.Activity;
-
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.*;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.*;
 import be.flo.roommateapp.R;
-import be.flo.roommateapp.model.dto.ListShoppingItemDTO;
-import be.flo.roommateapp.model.dto.ResultDTO;
 import be.flo.roommateapp.model.dto.ShoppingItemDTO;
 import be.flo.roommateapp.model.dto.technical.DTO;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
-import be.flo.roommateapp.vue.fragment.IntentBuilder;
-import be.flo.roommateapp.vue.fragment.shopping.ShoppingItemListFragment;
-import be.flo.roommateapp.vue.listAdapter.ShoppingItemListAdapter;
 import be.flo.roommateapp.vue.widget.Field;
 import be.flo.roommateapp.vue.widget.Form;
-
-import java.util.List;
 
 /**
  * Created by florian on 11/11/14.

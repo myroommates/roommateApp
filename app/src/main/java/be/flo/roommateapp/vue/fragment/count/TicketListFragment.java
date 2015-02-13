@@ -19,8 +19,9 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.activity.edit.EditTicketActivity;
-import be.flo.roommateapp.vue.fragment.IntentBuilder;
+import be.flo.roommateapp.vue.technical.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.TicketListAdapter;
+import be.flo.roommateapp.vue.technical.navigation.MenuManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,7 +207,7 @@ public class TicketListFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
 
-        getActivity().getActionBar().setTitle(R.string.nav_count_ticket);
+        getActivity().getActionBar().setTitle(MenuManager.SubMenuElement.getByClass(this.getClass()).getName());
 
         menu.clear();
 

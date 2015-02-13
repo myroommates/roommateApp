@@ -1,4 +1,4 @@
-package be.flo.roommateapp.vue.technical.slidingBar;
+package be.flo.roommateapp.vue.technical.navigation;
 
 import android.content.Context;
 import android.graphics.Canvas;

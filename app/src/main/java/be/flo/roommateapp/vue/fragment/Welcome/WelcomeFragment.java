@@ -1,9 +1,7 @@
 package be.flo.roommateapp.vue.fragment.Welcome;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
@@ -15,11 +13,10 @@ import be.flo.roommateapp.model.dto.TicketDTO;
 import be.flo.roommateapp.model.dto.TicketDebtorDTO;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.model.util.StringUtil;
-import be.flo.roommateapp.vue.activity.edit.EditRoommateActivity;
 import be.flo.roommateapp.vue.activity.edit.EditShoppingItemActivity;
 import be.flo.roommateapp.vue.activity.edit.EditTicketActivity;
 import be.flo.roommateapp.vue.dialog.DialogConstructor;
-import be.flo.roommateapp.vue.fragment.IntentBuilder;
+import be.flo.roommateapp.vue.technical.IntentBuilder;
 import be.flo.roommateapp.vue.listAdapter.ShoppingItemSelectableListAdapter;
 
 /**

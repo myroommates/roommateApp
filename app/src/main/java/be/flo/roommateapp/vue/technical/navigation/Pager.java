@@ -1,21 +1,12 @@
-package be.flo.roommateapp.vue.pager;
+package be.flo.roommateapp.vue.technical.navigation;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import be.flo.roommateapp.R;
-import be.flo.roommateapp.vue.fragment.MenuManager;
-import be.flo.roommateapp.vue.fragment.admin.RoommateFragment;
-import be.flo.roommateapp.vue.technical.MyPagerAdapter;
-import be.flo.roommateapp.vue.technical.slidingBar.TabLayout;
 
 /**
  * Created by florian on 3/12/14.
@@ -67,8 +58,8 @@ public class Pager extends Fragment {//StatePagerAdapter {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        PagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity(), menuElement, getChildFragmentManager());
-        mViewPager.setAdapter(myPagerAdapter);
+        android.support.v4.view.PagerAdapter pagerAdapter = new PagerAdapter(getActivity(), menuElement, getChildFragmentManager());
+        mViewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = ((TabLayout) view.findViewById(R.id.sliding_tabs));
         tabLayout.setViewPager(mViewPager);

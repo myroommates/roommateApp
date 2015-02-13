@@ -62,8 +62,10 @@
     <style name="element">
         <item name="android:background">@drawable/element_background</item>
         <item name="android:layout_margin">5dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">20dp</item>
+        <!--
+        -->
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:textColor">@color/t_text</item>
