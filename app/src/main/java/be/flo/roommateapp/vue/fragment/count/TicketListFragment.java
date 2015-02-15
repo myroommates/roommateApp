@@ -71,7 +71,7 @@ public class TicketListFragment extends Fragment {
 
         //create adapter
         ticketDTOList = Storage.getTicketList();
-        adapter = new TicketListAdapter(this.getActivity(), ticketDTOList);
+        adapter = new TicketListAdapter(this.getActivity());
 
 
         ((Spinner) view.findViewById(R.id.spinner_order)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,13 +108,37 @@ public class TicketListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ticketDTOList = Storage.getTicketList();
+        adapter.clear();
+
+        adapter.addAll(ticketDTOList);
+
+        //notify that the model changed
+        adapter.notifyDataSetChanged();
+
+        //sort
+        sortList();
+    }
+
     private enum SortEnum {
         DATE, CATEGORY, ROOMMATE
     }
 
-    private void sortList(SortEnum sortEnum) {
+    private void sortList() {
+        int position = ((Spinner) view.findViewById(R.id.spinner_order)).getSelectedItemPosition();
+        if (position == 0) {
+            sortList(SortEnum.DATE);
+        } else if (position == 1) {
+            sortList(SortEnum.CATEGORY);
+        } else if (position == 2) {
+            sortList(SortEnum.ROOMMATE);
+        }
+    }
 
-        Log.e("list", sortEnum + "");
+    private void sortList(SortEnum sortEnum) {
 
         List<TicketDTO> list = new ArrayList<TicketDTO>();
         for (TicketDTO ticketDTO : ticketDTOList) {
@@ -122,7 +146,7 @@ public class TicketListFragment extends Fragment {
             for (int i = 0; i < list.size(); i++) {
                 TicketDTO dto = list.get(i);
                 if ((sortEnum == SortEnum.DATE && dto.getDate().compareTo(ticketDTO.getDate()) < 0) ||
-                        (sortEnum == SortEnum.CATEGORY && dto.getCategory().compareTo(ticketDTO.getCategory()) > 0) ||
+                        (sortEnum == SortEnum.CATEGORY && (ticketDTO.getCategory()==null || (dto.getCategory()!=null  && dto.getCategory().toLowerCase().compareTo(ticketDTO.getCategory().toLowerCase()) > 0))) ||
                         (sortEnum == SortEnum.ROOMMATE && dto.getPayerId().compareTo(ticketDTO.getPayerId()) > 0)) {
                     list.add(i, ticketDTO);
                     added = true;
@@ -150,7 +174,6 @@ public class TicketListFragment extends Fragment {
         for (TicketDTO ticketDTO : list) {
             a += ticketDTO.getId() + "/";
         }
-        Log.e("list", a);
     }
 
 
@@ -163,6 +186,9 @@ public class TicketListFragment extends Fragment {
 
         //notify that the model changed
         adapter.notifyDataSetChanged();
+
+        //order
+        sortList();
     }
 
 

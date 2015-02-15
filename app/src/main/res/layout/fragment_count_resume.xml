@@ -36,7 +36,7 @@
             <!-- resume header -->
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:orientation="vertical">
+                          android:orientation="horizontal">
 
                 <TextView
                         android:layout_width="50dp"
@@ -68,15 +68,13 @@
                         />
 
 
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/list_roommate_insertion"
-                        android:orientation="vertical"
-                        >
-                </LinearLayout>
-
-
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_roommate_insertion"
+                    android:orientation="vertical"
+                    >
             </LinearLayout>
 
 

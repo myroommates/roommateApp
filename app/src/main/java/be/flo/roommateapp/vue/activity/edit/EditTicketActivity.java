@@ -8,10 +8,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.*;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.*;
 import be.flo.roommateapp.model.dto.technical.DTO;
@@ -20,6 +18,7 @@ import be.flo.roommateapp.model.util.UserIcon;
 import be.flo.roommateapp.model.util.externalRequest.Request;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
+import be.flo.roommateapp.vue.dialog.DialogConstructor;
 import be.flo.roommateapp.vue.spinner.SelectionWithOpenFieldSpinner;
 import be.flo.roommateapp.vue.widget.DateView;
 import be.flo.roommateapp.vue.widget.Field;
@@ -241,6 +240,14 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                 if (ckEqualRepartition.isChecked()) {
                     computeValues();
                 }
+            }
+        });
+
+        //add calculator
+        ((ImageButton)findViewById(R.id.b_calculator)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogConstructor.dialogCalculator(EditTicketActivity.this).show();
             }
         });
 

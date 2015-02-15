@@ -19,20 +19,18 @@ import java.util.List;
  */
 public class RoommateListAdapter extends ArrayAdapter<RoommateDTO> {
 
-    private List<RoommateDTO> items;
     private Context context;
 
 
-    public RoommateListAdapter(Context context, List<RoommateDTO> items) {
-        super(context, R.layout.list_element_admin_roommate, items);
+    public RoommateListAdapter(Context context) {
+        super(context, R.layout.list_element_admin_roommate);
         this.context = context;
-        this.items = items;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        RoommateDTO dto = items.get(position);
+        RoommateDTO dto = getItem(position);
 
         MenuElement element = new MenuElement(dto);
 

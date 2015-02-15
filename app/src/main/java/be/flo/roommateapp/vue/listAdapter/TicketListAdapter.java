@@ -26,19 +26,17 @@ import java.util.List;
  */
 public class TicketListAdapter extends ArrayAdapter<TicketDTO> {
 
-    private List<TicketDTO> items;
     private Context context;
 
-    public TicketListAdapter(Context context, List<TicketDTO> items) {
-        super(context, R.layout.list_element_count_ticket, items);
+    public TicketListAdapter(Context context) {
+        super(context, R.layout.list_element_count_ticket);
         this.context = context;
-        this.items = items;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        TicketDTO dto = items.get(position);
+        TicketDTO dto = getItem(position);
 
         MenuElement element = new MenuElement(dto);
 
@@ -61,8 +59,8 @@ public class TicketListAdapter extends ArrayAdapter<TicketDTO> {
         if (dto.getDebtorList() != null) {
             Collections.sort(dto.getDebtorList());
             for (TicketDebtorDTO ticketDebtor : dto.getDebtorList()) {
-                RoommateDTO prayer = Storage.getRoommate(ticketDebtor.getRoommateId());
-                View userIconView = UserIcon.generateUserIcon(context, prayer, true);
+                RoommateDTO debtor = Storage.getRoommate(ticketDebtor.getRoommateId());
+                View userIconView = UserIcon.generateUserIcon(context, debtor, true);
                 ((LinearLayout) convertView.findViewById(R.id.prayers_content)).addView(userIconView, 0);
             }
         }

@@ -20,20 +20,18 @@ import java.util.List;
  */
 public class ShoppingItemListAdapter extends ArrayAdapter<ShoppingItemDTO> {
 
-    private List<ShoppingItemDTO> items;
     private Context context;
 
     public ShoppingItemListAdapter(Context context, List<ShoppingItemDTO> items) {
         super(context, R.layout.list_element_count_balance, items);
         this.context = context;
-        this.items = items;
     }
 
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ShoppingItemDTO dto = items.get(position);
+        ShoppingItemDTO dto = getItem(position);
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(R.layout.list_element_shopping_item, parent, false);

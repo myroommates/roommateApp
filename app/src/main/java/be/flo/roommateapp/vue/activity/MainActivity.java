@@ -2,8 +2,11 @@ package be.flo.roommateapp.vue.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.FrameLayout;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.util.Storage;
 import be.flo.roommateapp.vue.technical.navigation.MenuManager;
@@ -66,39 +69,47 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     @Override
     protected void onStart() {
         super.onStart();
-
-        //reload data is needed
+        //reload data
         if (!Storage.testStorage()) {
-            startActivity(new Intent(this, WelcomeActivity.class));
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
+        //} else {
+        //    super.onStart();
+        //}
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         lastPositionNaviabled = position;
 
-        // update the main content by replacing fragments
-        if (position == MenuManager.MenuElement.MENU_EL_LOGOUT.getOrder()) {
-            logout();
-        } else {
-            if (MenuManager.MenuElement.getByOrder(position).getSubMenuElements().length == 1) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, MenuManager.MenuElement.getSubMenuElementByPosition(position, 0).getFragment())
-                        .commit();
-                pager = null;
-            } else {
-                if (lastMenu != null && lastMenu == position && lastTab != null) {
-                    pager = Pager.newInstance(position, lastTab);
-                    lastTab = null;
-                } else {
-                    pager = Pager.newInstance(position, null);
-                }
+        pager = null;
+        Fragment target;
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, pager)
-                        .commit();
+        // update the main content by replacing fragments
+        if (MenuManager.MenuElement.getByOrder(position).getSubMenuElements().length == 1) {
+            target = MenuManager.MenuElement.getSubMenuElementByPosition(position, 0).getFragment();
+        } else {
+            if (lastMenu != null && lastMenu == position && lastTab != null) {
+                pager = Pager.newInstance(position, lastTab);
+                lastTab = null;
+            } else {
+                pager = Pager.newInstance(position, null);
             }
+            target = pager;
         }
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, target);
+
+        if (findViewById(R.id.container)!=null && ((FrameLayout) findViewById(R.id.container)).getChildCount() > 0) {
+            fragmentTransaction.addToBackStack(null);
+        }
+
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -111,12 +122,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         if (lastPositionNaviabled != null) {
             outState.putInt(INTENT_MENU, lastPositionNaviabled);
         }
-    }
-
-    public void logout() {
-        Storage.clean(this);
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
     }
 
 }

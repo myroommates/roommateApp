@@ -21,5 +21,5 @@
           android:textAppearance="?android:attr/textAppearanceListItemSmall"
           android:gravity="center_vertical"
           android:paddingLeft="10dp"
-          style="@style/myThemeDark"
-          android:minHeight="?android:attr/listPreferredItemHeightSmall" />
+          style="@style/lateral_menu_element"
+          android:minHeight="?android:attr/listPreferredItemHeightSmall"/>

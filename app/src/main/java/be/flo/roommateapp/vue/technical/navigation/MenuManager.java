@@ -19,13 +19,11 @@ public class MenuManager {
         MENU_EL_COUNT(R.string.nav_drawer_count, 1, SubMenuElement.COUNT_RESUME, SubMenuElement.COUNT_TICKET_LIST),
         MENU_EL_SHOPPING(R.string.nav_drawer_shopping, 2, SubMenuElement.SHOPPING_LIST),
         MENU_EL_CONFIG(R.string.nav_drawer_config, 3, SubMenuElement.ADMIN_ROOMMATE_LIST),
-        MENU_EL_PROFILE(R.string.nav_drawer_my_profile, 4, SubMenuElement.PROFILE_MY_PROFILE),
-        MENU_EL_LOGOUT(R.string.nav_drawer_logout, 5);
+        MENU_EL_PROFILE(R.string.nav_drawer_my_profile, 4, SubMenuElement.PROFILE_MY_PROFILE);
 
         private final int name;
         private final int order;
         private final SubMenuElement[] subMenuElements;
-        //private final Class<? extends FragmentStatePagerAdapter> pagerClass;
 
         private MenuElement(int name, int order, SubMenuElement... subMenuElements) {
             this.name = name;
@@ -34,23 +32,6 @@ public class MenuManager {
             this.subMenuElements = subMenuElements;
         }
 
-        /*
-                public static MenuElement getByClass(Class<?> pagerClass) {
-                    for (MenuElement menuElement : values()) {
-                        if (menuElement.pagerClass.equals(pagerClass)) {
-                            return menuElement;
-                        } else {
-                            for (SubMenuElement subMenuElement : menuElement.subMenuElements) {
-                                if (subMenuElement.fragmentClass.equals(pagerClass)) {
-                                    return menuElement;
-                                }
-                            }
-
-                        }
-                    }
-                    return null;
-                }
-        */
         public int getName() {
             return name;
         }
@@ -62,11 +43,7 @@ public class MenuManager {
         public SubMenuElement[] getSubMenuElements() {
             return subMenuElements;
         }
-/*
-        public Class<? extends FragmentStatePagerAdapter> getPagerClass() {
-            return pagerClass;
-        }
-*/
+
         public static SubMenuElement getSubMenuElementByPosition(int menuElementOrder, int subMenuElementOrder) {
             for (MenuElement menuElement : MenuElement.values()) {
                 if (menuElement.getOrder() == menuElementOrder) {
@@ -89,7 +66,7 @@ public class MenuManager {
         public static MenuElement getByClass(Class<? extends Fragment> aClass) {
             for (MenuElement menuElement : values()) {
                 for (SubMenuElement subMenuElement : menuElement.getSubMenuElements()) {
-                    if(subMenuElement.fragmentClass.equals(aClass)){
+                    if (subMenuElement.fragmentClass.equals(aClass)) {
                         return menuElement;
                     }
                 }

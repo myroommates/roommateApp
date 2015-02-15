@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">countcoloc</string>
+    <string name="app_name">Roommate !</string>
 
     <!-- GENERIC -->
     <string name="g_registration">Registration</string>
@@ -20,7 +20,6 @@
     <string name="g_submit">Submit</string>
     <string name="g_loading">Loading ...</string>
     <string name="g_price">Price</string>
-    <string name="g_homeName">Name of the house</string>
     <string name="g_close">Close</string>
     <string name="g_none">None</string>
     <string name="g_valid">Valid</string>
@@ -32,18 +31,22 @@
     <string name="g_name_abrv">Acronym</string>
     <string name="g_total">Total</string>
     <string name="g_warning">Warning</string>
+    <string name="g_category">Category</string>
+    <string name="logout">Logout</string>
 
 
     <!-- WELCOME -->
-    <string name="welcome_bought_shopping_item">I bought this articles</string>
-    <string name="welcome_add_shopping_item_btn">Add a shopping item</string>
+    <string name="welcome_bought_shopping_item">I bought these articles</string>
+    <string name="welcome_add_shopping_item_btn">Add an article</string>
     <string name="welcome_add_ticket_btn">Add a ticket</string>
-    <string name="welcome_dept_txt">Your courrent sold is :</string>
+    <string name="welcome_dept_txt">Your current sold is :</string>
+    <string name="welcome_title_count">Count</string>
+    <string name="welcome_title_shopping">Shopping</string>
 
     <!-- shopping -->
     <string name="shopping_only_for_me">Only for me</string>
-    <string name="edit_shopping_item_edit">Edit shopping item</string>
-    <string name="edit_shopping_item_create">Create shopping item</string>
+    <string name="edit_shopping_item_edit">Edit article</string>
+    <string name="edit_shopping_item_create">Create an article</string>
     <string name="edit_ticket_category_shopping">Shopping</string>
     <string name="edit_ticket_desc_shopping">Shopping</string>
 
@@ -53,7 +56,6 @@
     <string name="nav_drawer_count">Count</string>
     <string name="nav_drawer_shopping">Shopping</string>
     <string name="nav_drawer_events">Events</string>
-    <string name="nav_drawer_logout">Logout</string>
     <string name="nav_drawer_my_profile">My profile</string>
 
     <string name="nav_count_ticket">Ticket list</string>
@@ -84,7 +86,6 @@
     <!-- login activity -->
     <string name="login_activity_login">Login you</string>
     <string name="login_activity_forgot_password">Forgot password ?</string>
-    <string name="login_activity_registration">Or create a new roommate</string>
     <string name="a_login_registration_button">Not registered yet ?</string>
 
     <!-- ticket orderby -->
@@ -107,27 +108,12 @@
     <string name="count_resume_payed">Payed</string>
     <string name="count_how_to_resolve_title">How to resolve</string>
     <string name="count_resume_title">Resume</string>
-
-
-    <string name="create_account_title">Create account</string>
-    <string name="listroomate_title">List of roommate</string>
-    <string name="manageTicket_title">Mange tickets</string>
-    <string name="createTicket_title">Create ticket</string>
-    <string name="createShoppingItem_title">Create shopping item</string>
-    <string name="result_title">Result</string>
-    <string name="category_create">Create new category</string>
-    <string name="category">Category</string>
-    <string name="logout">Logout</string>
-    <string name="roommate_create">Create a new roommate</string>
-    <string name="prayers">Prayers</string>
     <string name="result_balance_from">must pay</string>
     <string name="result_balance_to">to</string>
-    <string name="result_title_details">Details</string>
-    <string name="result_title_balance">Who must pay what?</string>
-    <string name="payed">Payed</string>
-    <string name="must_pay">Must pay</string>
-    <string name="balance">Balance</string>
-    <string name="my_name">My name</string>
 
+    <string name="roommate_create">Create a new roommate</string>
+    <string name="createTicket_title">Create ticket</string>
+    <string name="createShoppingItem_title">Create an article</string>
+    <string name="my_name">Your name</string>
 
 </resources>

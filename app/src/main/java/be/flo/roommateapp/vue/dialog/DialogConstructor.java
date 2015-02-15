@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -36,6 +37,14 @@ public class DialogConstructor {
                 .setTitle(R.string.g_loading)
                 .setCancelable(false);
         return builder.create();
+    }
+
+    public static Dialog dialogCalculator(Activity activity) {
+
+        //build the loadingDialog loading
+        Dialog d = new CalculatorDialog(activity);
+
+        return d;
     }
 
     public static Dialog dialogWarning(Activity activity, String message){

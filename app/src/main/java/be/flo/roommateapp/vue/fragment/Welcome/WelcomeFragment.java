@@ -25,6 +25,7 @@ import be.flo.roommateapp.vue.listAdapter.ShoppingItemSelectableListAdapter;
 public class WelcomeFragment extends Fragment {
 
     private View view;
+    private ListView listShoppingItem;
 
     /**
      * Called when the activity is first created.
@@ -64,13 +65,6 @@ public class WelcomeFragment extends Fragment {
             currentSold.setTextColor(getResources().getColor(R.color.negative_value));
         }
 
-        //display shopping item list
-        //create adapter
-        final ShoppingItemSelectableListAdapter adapter = new ShoppingItemSelectableListAdapter(this.getActivity(), Storage.getShoppingItemNotBoughtList());
-
-        //add adapter
-        final ListView listShoppingItem = (ListView) view.findViewById(R.id.list_insertion);
-        listShoppingItem.setAdapter(adapter);
 
         //add button
         Button addTicketBtn = (Button) view.findViewById(R.id.welcome_add_ticket_btn);
@@ -120,6 +114,28 @@ public class WelcomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //display shopping item list
+        //create adapter
+        final ShoppingItemSelectableListAdapter adapter = new ShoppingItemSelectableListAdapter(this.getActivity(), Storage.getShoppingItemNotBoughtList());
+
+        //add adapter
+        listShoppingItem = (ListView) view.findViewById(R.id.list_insertion);
+        listShoppingItem.setAdapter(adapter);
+
+        //compute brough item visibility
+        if(Storage.getShoppingItemList().size()>0){
+            ((Button) view.findViewById(R.id.welcome_bought_btn)).setVisibility(View.VISIBLE);
+        }
+        else{
+            ((Button) view.findViewById(R.id.welcome_bought_btn)).setVisibility(View.GONE);
+        }
+
     }
 
     private double computeMyDebt() {

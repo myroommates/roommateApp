@@ -1,5 +1,6 @@
 package be.flo.roommateapp.vue.activity;
 
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,8 +46,7 @@ public class RegistrationActivity extends AbstractActivity implements RequestAct
                 form = new Form(this, new RegistrationDTO(),
 
                         new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("name"), R.string.my_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
-                        new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS),
-                        new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("password"), R.string.g_password, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
+                        new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
@@ -140,6 +140,11 @@ public class RegistrationActivity extends AbstractActivity implements RequestAct
     @Override
     public void successAction(DTO successDTO) {
         Storage.store(this, (LoginSuccessDTO) successDTO);
-        startActivity(new Intent(this, MAIN_ACTIVITY));
+        Intent intent = new Intent(this, MAIN_ACTIVITY);
+        //TaskStackBuilder.create(this).addNextIntentWithParentStack(intent).startActivities();
+        //startActivityForResult(intent,0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

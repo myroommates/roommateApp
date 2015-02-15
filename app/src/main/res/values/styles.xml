@@ -9,6 +9,8 @@
     <color name="negative_value">#ffce0000</color>
 
     <!-- background -->
+    <color name="main_color">#02ca52</color>
+    <color name="main_color_2">#4ba252</color>
     <color name="t_background">#eeeeee</color>
     <color name="t_element_background">#ffffff</color>
     <color name="t_text">#555555</color>
@@ -22,8 +24,8 @@
     <color name="menu_text">#e2e2e2</color>
     <color name="user_icon_text_color">#e2e2e2</color>
 
-    <color name="sub_menu_bg">#424242</color>
-    <color name="sub_menu_text">@color/menu_text</color>
+    <color name="sub_menu_bg">#ffd8d8d8</color>
+    <color name="sub_menu_text">#ff3a3a3a</color>
 
     <style name="dialog_warning" parent="@android:style/Theme.Holo.Light.Dialog">
     </style>
@@ -45,6 +47,13 @@
     <style name="myThemeDark">
         <item name="android:background">@color/menu_bg_1</item>
         <item name="android:textColor">@color/menu_text</item>
+    </style>
+
+    <!-- menu theme -->
+    <style name="lateral_menu_element">
+        <item name="android:background">@drawable/menu_lateral_bg</item>
+        <item name="android:textColor">@color/menu_text</item>
+
     </style>
 
     <style name="bg_element">
@@ -91,13 +100,13 @@
 
     <!-- titles -->
     <style name="title_h3">
-        <item name="android:textSize">20dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@drawable/title_h4</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_marginRight">25dp</item>
         <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:padding">4dp</item>
-        <item name="android:background">@drawable/title_h3</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!-- style for sub menu row -->

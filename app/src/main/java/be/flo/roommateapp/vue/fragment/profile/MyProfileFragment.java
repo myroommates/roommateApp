@@ -1,12 +1,17 @@
 package be.flo.roommateapp.vue.fragment.profile;
 
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import be.flo.roommateapp.R;
@@ -18,6 +23,7 @@ import be.flo.roommateapp.model.util.externalRequest.Request;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.RequestActionInterface;
+import be.flo.roommateapp.vue.activity.LoginActivity;
 import be.flo.roommateapp.vue.widget.Field;
 import be.flo.roommateapp.vue.widget.Form;
 
@@ -51,7 +57,7 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
         getActivity().invalidateOptionsMenu();
 
         //build layout
-        view = inflater.inflate(R.layout.fragment_default, container, false);
+        view = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
 
         //load data
@@ -75,6 +81,13 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
             ViewGroup insertPoint = (ViewGroup) view.findViewById(R.id.insert_point);
             insertPoint.addView(form, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+            ((Button)view.findViewById(R.id.b_logout)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logout();
+                }
+            });
+
         } catch (MyException e) {
             e.printStackTrace();
             displayErrorMessage(e.getMessage());
@@ -96,13 +109,13 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
             // create animation and add to the refresh item
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             ImageView iv = (ImageView) inflater.inflate(R.layout.loading_icon, null);
-            menu.findItem(R.id.b_save).setActionView(iv);
+            menu.findItem(R.id.b_save_my_profile).setActionView(iv);
             iv.startAnimation(refreshAnimation);
             view.findViewById(R.id.error_message_container).setVisibility(View.GONE);
         } else {
-            if (menu.findItem(R.id.b_save).getActionView() != null) {
-                menu.findItem(R.id.b_save).getActionView().clearAnimation();
-                menu.findItem(R.id.b_save).setActionView(null);
+            if (menu.findItem(R.id.b_save_my_profile).getActionView() != null) {
+                menu.findItem(R.id.b_save_my_profile).getActionView().clearAnimation();
+                menu.findItem(R.id.b_save_my_profile).setActionView(null);
             }
         }
     }
@@ -117,6 +130,8 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
     public void onPrepareOptionsMenu(Menu menu) {
 
         assert getActivity().getActionBar() != null;
+
+        this.menu = menu;
 
         getActivity().getActionBar().setTitle(R.string.nav_count_resume);
 
@@ -165,5 +180,25 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
             e.printStackTrace();
             displayErrorMessage(e.getMessage());
         }
+    }
+
+
+    public void logout() {
+        //FragmentManager fm = getActivity().getSupportFragmentManager();
+        //fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        /*
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+        */
+        Storage.clean(getActivity());
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        //TaskStackBuilder.create(getActivity()).addNextIntentWithParentStack(intent).startActivities();
+        //startActivityForResult(intent,0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );//| FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        startActivity(intent);
+        getActivity().finish();
+
     }
 }

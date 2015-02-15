@@ -117,6 +117,11 @@ public class LoginActivity extends AbstractActivity implements RequestActionInte
     public void successAction(DTO successDTO) {
 
         Storage.store(this, (LoginSuccessDTO) successDTO);
-        startActivity(new Intent(LoginActivity.this, MAIN_ACTIVITY));
+        Intent intent = new Intent(LoginActivity.this, MAIN_ACTIVITY);
+        //startActivityForResult(intent,0);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

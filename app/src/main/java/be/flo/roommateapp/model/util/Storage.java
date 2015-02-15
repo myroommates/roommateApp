@@ -7,6 +7,7 @@ import be.flo.roommateapp.model.dto.*;
 import be.flo.roommateapp.model.service.AccountService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,13 +16,15 @@ import java.util.List;
  */
 public class Storage {
 
+    private final static long MAX_DELAY = 30 * 60 * 1000;
+
+    private static Date lastLoading;
     private static RoommateDTO currentRoommate;
     private static List<RoommateDTO> roommateList;
     private static HomeDTO home;
     private static List<TicketDTO> ticketList;
     private static List<ShoppingItemDTO> shoppingItemList;
     private static String authenticationKey;
-
 
 
     public static void store(Context context, LoginSuccessDTO loginSuccessDTO) {
@@ -37,20 +40,25 @@ public class Storage {
             ticketList = new ArrayList<>();
         }
 
-        if(shoppingItemList==null){
+        if (shoppingItemList == null) {
             shoppingItemList = new ArrayList<>();
         }
 
         //compute color for icon
         for (RoommateDTO roommateDTO : roommateList) {
 
-            roommateDTO.setIconColorTop(toRGB(roommateDTO.getIconColor(), 0.8F, 0.6F, 1F));
-            roommateDTO.setIconColorBottom(toRGB(roommateDTO.getIconColor(), 0.8F, 0.3F, 1F));
+            computeColorForRoommate(roommateDTO);
         }
 
         AccountService.storeService(context, loginSuccessDTO);
+        lastLoading = new Date();
 
 
+    }
+
+    private static void computeColorForRoommate(RoommateDTO roommateDTO) {
+        roommateDTO.setIconColorTop(toRGB(roommateDTO.getIconColor(), 0.8F, 0.6F, 1F));
+        roommateDTO.setIconColorBottom(toRGB(roommateDTO.getIconColor(), 0.8F, 0.3F, 1F));
     }
 
     public static boolean isConnected() {
@@ -124,6 +132,7 @@ public class Storage {
     }
 
     public static void addRoommate(RoommateDTO roommateDTO) {
+        computeColorForRoommate(roommateDTO);
         roommateList.add(roommateDTO);
     }
 
@@ -148,6 +157,10 @@ public class Storage {
 
     public static void setRoommate(List<RoommateDTO> list) {
         Storage.roommateList = list;
+        for (RoommateDTO roommateDTO : roommateList) {
+            computeColorForRoommate(roommateDTO);
+        }
+
     }
 
     /*
@@ -242,6 +255,10 @@ public class Storage {
         if (currentRoommate == null) {
             return false;
         }
+        /*
+        if (new Date().getTime() > lastLoading.getTime() + MAX_DELAY) {
+            return false;
+        }*/
         return true;
     }
 
@@ -249,7 +266,7 @@ public class Storage {
     private static int toRGB(float h, float s, float l, float alpha) {
 
         //convert h
-        h=h/360;
+        h = h / 360;
 
         if (s < 0.0f || s > 1.0f) {
             String message = "Color parameter outside of expected range - Saturation (" + s + ")";

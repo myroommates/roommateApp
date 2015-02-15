@@ -59,7 +59,7 @@ public class RoommateFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_admin_rommate_manager, container, false);
 
         //create the adapter
-        adapter = new RoommateListAdapter(this.getActivity(), Storage.getRoommateList());
+        adapter = new RoommateListAdapter(this.getActivity());
 
         //recover the list
         ListView listView = (ListView) view.findViewById(R.id.list_insertion);
@@ -71,6 +71,12 @@ public class RoommateFragment extends Fragment {
         this.registerForContextMenu(listView);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshList();
     }
 
     /**
@@ -112,13 +118,6 @@ public class RoommateFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         switch (item.getItemId()) {
-            case R.id.b_edit:
-
-                //edit => to the editRoommate activity
-                Intent intent = IntentBuilder.buildIntent(this, EditRoommateActivity.class);
-                intent.putExtra("roommateId", adapter.getItem(info.position).getId());
-                startActivity(intent);
-                return true;
             case R.id.b_remove:
                 //refresh the roommate list
                 RemoveRequest request = new RemoveRequest(adapter.getItem(info.position));

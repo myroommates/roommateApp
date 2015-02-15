@@ -22,7 +22,6 @@ import be.flo.roommateapp.model.util.UserIcon;
 import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
-import be.flo.roommateapp.vue.listAdapter.BalanceListAdapter;
 import be.flo.roommateapp.vue.technical.navigation.MenuManager;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import java.util.List;
 public class ResumeFragment extends Fragment {
 
     private View view;
-    private BalanceListAdapter adapter = null;
     private Animation refreshAnimation;
     ViewGroup container;
     private Menu menu;
@@ -60,11 +58,16 @@ public class ResumeFragment extends Fragment {
         //build layout
         view = inflater.inflate(R.layout.fragment_count_resume, container, false);
 
-        adapter = new BalanceListAdapter(this.getActivity(), Storage.getRoommateList());
-
         draw();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        clear();
+        draw();
     }
 
     private void draw() {
@@ -81,7 +84,7 @@ public class ResumeFragment extends Fragment {
 
     }
 
-    private void clear(LayoutInflater inflater) {
+    private void clear() {
         ((LinearLayout) view.findViewById(R.id.how_to_resolve_container)).removeAllViews();
         ((LinearLayout) view.findViewById(R.id.list_roommate_insertion)).removeAllViews();
     }
@@ -145,8 +148,6 @@ public class ResumeFragment extends Fragment {
             balance = payed - dept;
         }
     }
-
-    //  getActivity().getActionBar().setTitle(R.string.menu_result);
 
     private void computeResult(LayoutInflater inflater) {
 
@@ -361,7 +362,7 @@ public class ResumeFragment extends Fragment {
         protected void onPreExecute() {
             view.findViewById(R.id.error_message_container).setVisibility(View.GONE);
             displayRefreshIcon(true);
-            clear(ResumeFragment.this.getActivity().getLayoutInflater());
+            clear();
         }
 
         @Override

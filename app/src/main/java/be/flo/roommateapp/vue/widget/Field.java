@@ -333,8 +333,6 @@ public class Field extends LinearLayout {
                 return ((CheckBox) fieldProperties.inputView).isChecked();
             } else {
                 Editable content = ((EditText) fieldProperties.inputView).getText();
-                Log.e("test", "field:" + fieldProperties);
-                Log.e("test", "content:" + content);
                 if (content != null) {
 
                     //build DTO

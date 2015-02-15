@@ -107,13 +107,26 @@ public class ShoppingItemListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshList();
+    }
+
     private enum SortEnum {
         DATE, ROOMMATE
     }
 
-    private void sortList(SortEnum sortEnum) {
+    private void sortList() {
+        int position = ((Spinner) view.findViewById(R.id.spinner_order)).getSelectedItemPosition();
+        if (position == 0) {
+            sortList(SortEnum.DATE);
+        } else if (position == 1) {
+            sortList(SortEnum.ROOMMATE);
+        }
+    }
 
-        Log.e("list", sortEnum + "");
+    private void sortList(SortEnum sortEnum) {
 
         List<ShoppingItemDTO> list = new ArrayList<>();
         for (ShoppingItemDTO shoppingItem : shoppingItemDTOList) {
@@ -145,10 +158,15 @@ public class ShoppingItemListFragment extends Fragment {
      */
     private void refreshList() {
 
+        adapter.clear();
+
         adapter.addAll(Storage.getShoppingItemNotBoughtList());
 
         //notify that the model changed
         adapter.notifyDataSetChanged();
+
+        //sort
+        sortList();
     }
 
 
@@ -337,7 +355,6 @@ public class ShoppingItemListFragment extends Fragment {
         protected void onPreExecute() {
             view.findViewById(R.id.error_message_container).setVisibility(View.GONE);
             displayRefreshIcon(true);
-            Log.w("adapter","adapter into onPreExecute : "+adapter.getCount());
             adapter.clear();
         }
 
