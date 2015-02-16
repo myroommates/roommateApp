@@ -14,6 +14,7 @@
                 android:layout_height="wrap_content"
                 android:editable="false"
                 android:id="@+id/calculator_output"
+                android:layout_gravity="right"
                 />
 
         <LinearLayout
@@ -183,7 +184,7 @@
                     android:layout_weight="1"
                     android:text="*"
                     android:id="@+id/b_calculator_multiple"
-                    />
+                    android:enabled="true"/>
 
             <FrameLayout
                     android:layout_width="0dp"
@@ -213,7 +214,7 @@
                     android:text="@string/g_valid"
                     android:id="@+id/b_calculator_valid"
                     style="@style/button"
-                    />
+                    android:enabled="true"/>
         </LinearLayout>
 
 

@@ -11,6 +11,11 @@
     <!-- background -->
     <color name="main_color">#02ca52</color>
     <color name="main_color_2">#4ba252</color>
+    <color name="main_color_disabled">#9602ca52</color>
+    <color name="main_color_2_disabled">#964ba252</color>
+    <color name="main_color_pressed">#ff02af51</color>
+    <color name="main_color_2_pressed">#ff468746</color>
+
     <color name="t_background">#eeeeee</color>
     <color name="t_element_background">#ffffff</color>
     <color name="t_text">#555555</color>
@@ -98,6 +103,9 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="button_little" parent="button">
+        <item name="android:background">@drawable/button_little</item>
+    </style>
     <!-- titles -->
     <style name="title_h3">
         <item name="android:background">@drawable/title_h4</item>

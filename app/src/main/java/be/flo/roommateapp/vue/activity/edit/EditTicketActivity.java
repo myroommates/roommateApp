@@ -1,13 +1,12 @@
 package be.flo.roommateapp.vue.activity.edit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.*;
@@ -29,7 +28,7 @@ import java.util.List;
 /**
  * Created by florian on 11/11/14.
  */
-public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implements CalculatorEventInterface {
+public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
 
     //intent constant
     public static final String TICKET_ID = "ticketId";
@@ -41,7 +40,6 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
     //field
     private EditText valueTotalField;
     private CheckBox ckEqualRepartition;
-    private Menu menu;
     private boolean initialize = true;
 
     private boolean edit;
@@ -52,12 +50,14 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
     private Field dateField;
     private Field descriptionField;
     private SelectionWithOpenFieldSpinner categorySpinner;
+    private ImageButton calculatorTotal;
 
 
     private class Debtor {
         private RoommateDTO roommateDTO;
         private CheckBox checkBox;
         private EditText editText;
+        private ImageButton calculator;
 
         public Debtor(RoommateDTO roommateDTO) {
             this.roommateDTO = roommateDTO;
@@ -148,17 +148,21 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
 
 
         //insert details value
-        for (RoommateDTO roommateDTO : Storage.getRoommateList()) {
+        for (final RoommateDTO roommateDTO : Storage.getRoommateList()) {
 
-            Debtor debtor = new Debtor(roommateDTO);
+            LayoutInflater inflater = this.getLayoutInflater();
+            View lineLayout = inflater.inflate(R.layout.activity_edit_ticket_debtor_line, insertPoint, false);
+            insertPoint.addView(lineLayout);
+
+            final Debtor debtor = new Debtor(roommateDTO);
             debtors.add(debtor);
 
             //value edit text
-            final EditText valueDebtorField = new EditText(this);
-            valueDebtorField.setEnabled(!ckEqualRepartition.isChecked());
-            valueDebtorField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            final EditText valueDebtorField = (EditText) lineLayout.findViewById(R.id.debtor_value);
+
             debtor.editText = valueDebtorField;
-            valueDebtorField.addTextChangedListener(new TextWatcher() {
+            debtor.editText.setEnabled(!ckEqualRepartition.isChecked());
+            debtor.editText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -176,40 +180,46 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
                 }
             });
 
-            LinearLayout.LayoutParams pTxt = new LinearLayout.LayoutParams(
-                    0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            valueDebtorField.setLayoutParams(pTxt);
+            //calculator
+            ImageButton calculator = (ImageButton) lineLayout.findViewById(R.id.b_calculator_debtor);
+
+            debtor.calculator=calculator;
+            debtor.calculator.setEnabled(!ckEqualRepartition.isChecked());
+            calculator.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    Double defaultValue = null;
+                    try {
+                        defaultValue = Double.parseDouble(debtor.editText.getText().toString().replace(",", "."));
+                    } catch (NumberFormatException e) {
+                    }
+                    DialogConstructor.dialogCalculator(EditTicketActivity.this, new CalculatorEventInterface() {
+
+                        @Override
+                        public void setResult(double value) {
+                            debtor.editText.setText(String.format("%.2f", value));
+                        }
+                    }, defaultValue).show();
+                }
+            });
 
             //checkbox
-            CheckBox checkBox = new CheckBox(this);
+            CheckBox checkBox = (CheckBox) lineLayout.findViewById(R.id.debtor_select);
             checkBox.setChecked(true);
             debtor.checkBox = checkBox;
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    valueDebtorField.setEnabled(isChecked && !ckEqualRepartition.isChecked());
+                    debtor.editText.setEnabled(isChecked && !ckEqualRepartition.isChecked());
+                    debtor.calculator.setEnabled(isChecked && !ckEqualRepartition.isChecked());
                     computeValues();
                 }
             });
 
             //value
-            LinearLayout linearLayout = new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-            LinearLayout firstCol = new LinearLayout(this);
-            firstCol.setOrientation(LinearLayout.HORIZONTAL);
-            firstCol.addView(checkBox);
-            firstCol.addView(UserIcon.generateUserIcon(this, roommateDTO));
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
-                    0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            firstCol.setLayoutParams(p);
-
-            linearLayout.addView(firstCol);
-            linearLayout.addView(valueDebtorField);
-
-            insertPoint.addView(linearLayout);
+            //add icon
+            ((ViewGroup) lineLayout.findViewById(R.id.debtor_icon)).addView(UserIcon.generateUserIcon(this, roommateDTO));
         }
 
 
@@ -218,8 +228,11 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 for (Debtor debtor : debtors) {
                     debtor.editText.setEnabled(debtor.checkBox.isChecked() && !ckEqualRepartition.isChecked());
+                    debtor.calculator.setEnabled(debtor.checkBox.isChecked() && !ckEqualRepartition.isChecked());
                 }
                 valueTotalField.setEnabled(isChecked);
+                calculatorTotal.setEnabled(isChecked);
+
             }
         });
 
@@ -244,17 +257,24 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
         });
 
         //add calculator
-        ((ImageButton) findViewById(R.id.b_calculator)).setOnClickListener(new View.OnClickListener() {
+        calculatorTotal = (ImageButton) findViewById(R.id.b_calculator_value_total);
+        calculatorTotal.setEnabled(ckEqualRepartition.isChecked());
+        calculatorTotal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Double defaultValue = null;
                 try {
-                    defaultValue = Double.parseDouble(valueTotalField.getText().toString());
+                    defaultValue = Double.parseDouble(valueTotalField.getText().toString().replace(",", "."));
                 } catch (NumberFormatException e) {
                 }
 
-                DialogConstructor.dialogCalculator(EditTicketActivity.this, EditTicketActivity.this, defaultValue).show();
+                DialogConstructor.dialogCalculator(EditTicketActivity.this, new CalculatorEventInterface() {
+                    @Override
+                    public void setResult(double value) {
+                        valueTotalField.setText(String.format("%.2f", value));
+                    }
+                }, defaultValue).show();
             }
         });
 
@@ -357,8 +377,6 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-        this.menu = menu;
 
         assert getActionBar() != null;
 
@@ -476,10 +494,5 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implemen
         if ((shoppingItemList == null || shoppingItemReceive) && ticketReceive) {
             backToMainActivity();
         }
-    }
-
-    @Override
-    public void setResult(double value) {
-        valueTotalField.setText(String.format("%.2f", value));
     }
 }

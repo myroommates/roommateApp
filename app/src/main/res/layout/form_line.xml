@@ -17,14 +17,12 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:id="@+id/label"
-                android:text="je suiis un text tres long parce que .... jk lh lhj "
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical" android:textStyle="bold"/>
 
         <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="je suiis content"
                 android:layout_weight="2"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/insert_point"

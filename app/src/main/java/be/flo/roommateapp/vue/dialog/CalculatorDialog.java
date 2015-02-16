@@ -22,7 +22,7 @@ public class CalculatorDialog extends Dialog {
     private CalculatorEventInterface calculatorEventInterface;
     private Double defaultValue;
 
-    public CalculatorDialog(Context context, CalculatorEventInterface calculatorEventInterface, Double defaultValue) {
+    public CalculatorDialog(Context context, CalculatorEventInterface calculatorEventInterface,Double defaultValue) {
         super(context);
         this.calculatorEventInterface = calculatorEventInterface;
 
