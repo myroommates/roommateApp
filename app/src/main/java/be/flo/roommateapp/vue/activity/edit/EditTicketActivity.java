@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -18,9 +17,9 @@ import be.flo.roommateapp.model.util.UserIcon;
 import be.flo.roommateapp.model.util.externalRequest.Request;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
+import be.flo.roommateapp.vue.dialog.CalculatorEventInterface;
 import be.flo.roommateapp.vue.dialog.DialogConstructor;
 import be.flo.roommateapp.vue.spinner.SelectionWithOpenFieldSpinner;
-import be.flo.roommateapp.vue.widget.DateView;
 import be.flo.roommateapp.vue.widget.Field;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * Created by florian on 11/11/14.
  */
-public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
+public class EditTicketActivity extends AbstractEditActivity<TicketDTO> implements CalculatorEventInterface {
 
     //intent constant
     public static final String TICKET_ID = "ticketId";
@@ -40,7 +39,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
     public static final String TICKET_LIST_ID_SHOPPING_ITEM_SEPARATION_SYMBOL = ",";
 
     //field
-    private EditText totalField;
+    private EditText valueTotalField;
     private CheckBox ckEqualRepartition;
     private Menu menu;
     private boolean initialize = true;
@@ -53,6 +52,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
     private Field dateField;
     private Field descriptionField;
     private SelectionWithOpenFieldSpinner categorySpinner;
+
 
     private class Debtor {
         private RoommateDTO roommateDTO;
@@ -142,9 +142,9 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
         ckEqualRepartition.setChecked(true);
 
         //total
-        totalField = (EditText) findViewById(R.id.value);
-        totalField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        totalField.setEnabled(ckEqualRepartition.isChecked());
+        valueTotalField = (EditText) findViewById(R.id.value);
+        valueTotalField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        valueTotalField.setEnabled(ckEqualRepartition.isChecked());
 
 
         //insert details value
@@ -154,11 +154,11 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
             debtors.add(debtor);
 
             //value edit text
-            final EditText textView = new EditText(this);
-            textView.setEnabled(!ckEqualRepartition.isChecked());
-            textView.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-            debtor.editText = textView;
-            textView.addTextChangedListener(new TextWatcher() {
+            final EditText valueDebtorField = new EditText(this);
+            valueDebtorField.setEnabled(!ckEqualRepartition.isChecked());
+            valueDebtorField.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+            debtor.editText = valueDebtorField;
+            valueDebtorField.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
@@ -179,7 +179,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
             LinearLayout.LayoutParams pTxt = new LinearLayout.LayoutParams(
                     0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-            textView.setLayoutParams(pTxt);
+            valueDebtorField.setLayoutParams(pTxt);
 
             //checkbox
             CheckBox checkBox = new CheckBox(this);
@@ -188,7 +188,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    textView.setEnabled(isChecked && !ckEqualRepartition.isChecked());
+                    valueDebtorField.setEnabled(isChecked && !ckEqualRepartition.isChecked());
                     computeValues();
                 }
             });
@@ -207,7 +207,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
             firstCol.setLayoutParams(p);
 
             linearLayout.addView(firstCol);
-            linearLayout.addView(textView);
+            linearLayout.addView(valueDebtorField);
 
             insertPoint.addView(linearLayout);
         }
@@ -219,13 +219,13 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                 for (Debtor debtor : debtors) {
                     debtor.editText.setEnabled(debtor.checkBox.isChecked() && !ckEqualRepartition.isChecked());
                 }
-                totalField.setEnabled(isChecked);
+                valueTotalField.setEnabled(isChecked);
             }
         });
 
-        //add listener to totalField
+        //add listener to valueTotalField
         //add this listener AFTER set text
-        totalField.addTextChangedListener(new TextWatcher() {
+        valueTotalField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -244,10 +244,17 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
         });
 
         //add calculator
-        ((ImageButton)findViewById(R.id.b_calculator)).setOnClickListener(new View.OnClickListener() {
+        ((ImageButton) findViewById(R.id.b_calculator)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogConstructor.dialogCalculator(EditTicketActivity.this).show();
+
+                Double defaultValue = null;
+                try {
+                    defaultValue = Double.parseDouble(valueTotalField.getText().toString());
+                } catch (NumberFormatException e) {
+                }
+
+                DialogConstructor.dialogCalculator(EditTicketActivity.this, EditTicketActivity.this, defaultValue).show();
             }
         });
 
@@ -292,7 +299,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                     debtor.checkBox.setChecked(false);
                 }
             }
-            totalField.setText(String.format("%.2f", total));
+            valueTotalField.setText(String.format("%.2f", total));
         }
     }
 
@@ -312,7 +319,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                 }
                 double valueByDebtor;
                 try {
-                    valueByDebtor = Double.parseDouble(totalField.getText().toString().replace(",", ".")) / total;
+                    valueByDebtor = Double.parseDouble(valueTotalField.getText().toString().replace(",", ".")) / total;
                 } catch (NumberFormatException e) {
                     valueByDebtor = 0.0;
                 }
@@ -335,7 +342,7 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
                         }
                     }
                 }
-                totalField.setText(String.format("%.2f", total));
+                valueTotalField.setText(String.format("%.2f", total));
             }
         }
     }
@@ -469,5 +476,10 @@ public class EditTicketActivity extends AbstractEditActivity<TicketDTO> {
         if ((shoppingItemList == null || shoppingItemReceive) && ticketReceive) {
             backToMainActivity();
         }
+    }
+
+    @Override
+    public void setResult(double value) {
+        valueTotalField.setText(String.format("%.2f", value));
     }
 }

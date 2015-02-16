@@ -33,6 +33,7 @@
     <string name="g_warning">Warning</string>
     <string name="g_category">Category</string>
     <string name="logout">Logout</string>
+    <string name="g_cancel">Cancel</string>
 
 
     <!-- WELCOME -->

@@ -33,6 +33,7 @@
     <string name="g_warning">Attention</string>
     <string name="g_category">Categorie</string>
     <string name="logout">Déconnexion</string>
+    <string name="g_cancel">Annuler</string>
 
 
     <!-- WELCOME -->

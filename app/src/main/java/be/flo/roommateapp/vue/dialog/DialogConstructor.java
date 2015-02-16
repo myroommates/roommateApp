@@ -39,10 +39,10 @@ public class DialogConstructor {
         return builder.create();
     }
 
-    public static Dialog dialogCalculator(Activity activity) {
+    public static Dialog dialogCalculator(Activity activity, CalculatorEventInterface calculatorEventInterface, Double defaultValue) {
 
         //build the loadingDialog loading
-        Dialog d = new CalculatorDialog(activity);
+        Dialog d = new CalculatorDialog(activity, calculatorEventInterface,defaultValue );
 
         return d;
     }
