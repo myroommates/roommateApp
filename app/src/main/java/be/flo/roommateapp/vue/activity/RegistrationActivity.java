@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.LoginSuccessDTO;
 import be.flo.roommateapp.model.dto.post.RegistrationDTO;
@@ -21,7 +22,9 @@ import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.RequestActionInterface;
 import be.flo.roommateapp.vue.technical.AbstractActivity;
+import be.flo.roommateapp.vue.util.Tools;
 import be.flo.roommateapp.vue.widget.Field;
+import be.flo.roommateapp.vue.widget.FieldEditText;
 import be.flo.roommateapp.vue.widget.Form;
 
 /**
@@ -42,19 +45,24 @@ public class RegistrationActivity extends AbstractActivity implements RequestAct
 
         //create field
         try {
-            try {
-                form = new Form(this, new RegistrationDTO(),
 
-                        new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("name"), R.string.my_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
-                        new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+            //email field
+            LayoutInflater inflater = LayoutInflater.from(this);
+            FieldEditText emailField = (FieldEditText) inflater.inflate(R.layout.field_text, null);
+            emailField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            emailField.setAutoCompleteValues(Tools.getAccountEmails(this));
+
+            form = new Form(this, new RegistrationDTO(),
+                    new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("name"), R.string.my_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
+                    new Field.FieldProperties(RegistrationDTO.class.getDeclaredField("email"), R.string.g_email,emailField));
+            form.intialize();
 
             ViewGroup insertPoint = (ViewGroup) findViewById(R.id.insert_point);
             insertPoint.addView(form, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         } catch (MyException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
 

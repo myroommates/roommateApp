@@ -4,12 +4,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import be.flo.roommateapp.R;
 import be.flo.roommateapp.model.dto.LoginSuccessDTO;
+import be.flo.roommateapp.model.dto.ResultDTO;
+import be.flo.roommateapp.model.dto.post.ForgotPasswordDTO;
 import be.flo.roommateapp.model.dto.post.LoginDTO;
 import be.flo.roommateapp.model.dto.technical.DTO;
 import be.flo.roommateapp.model.util.Storage;
@@ -20,12 +23,10 @@ import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.RequestActionInterface;
 import be.flo.roommateapp.vue.dialog.DialogConstructor;
 import be.flo.roommateapp.vue.technical.AbstractActivity;
-import be.flo.roommateapp.vue.util.Tools;
 import be.flo.roommateapp.vue.widget.Field;
-import be.flo.roommateapp.vue.widget.FieldEditText;
 import be.flo.roommateapp.vue.widget.Form;
 
-public class LoginActivity extends AbstractActivity implements RequestActionInterface {
+public class ForgotPasswordActivity extends AbstractActivity implements RequestActionInterface {
 
     private Form form = null;
     private Dialog loadingDialog;
@@ -40,36 +41,13 @@ public class LoginActivity extends AbstractActivity implements RequestActionInte
 
         loadingDialog = DialogConstructor.dialogLoading(this);
 
-        setContentView(R.layout.activity_login);
-
-        // to registration
-        findViewById(R.id.b_registration).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegistrationActivity.class));
-            }
-        });
-
-        // to forgot password
-        findViewById(R.id.b_forgot_password).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-            }
-        });
+        setContentView(R.layout.activity_forgot_password);
 
         try {
 
-            //email field
-            LayoutInflater inflater = LayoutInflater.from(this);
-            FieldEditText emailField = (FieldEditText) inflater.inflate(R.layout.field_text, null);
-            emailField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            emailField.setAutoCompleteValues(Tools.getAccountEmails(this));
-
             try {
-                form = new Form(this, new LoginDTO(),
-                        new Field.FieldProperties(LoginDTO.class.getDeclaredField("email"), R.string.g_email,emailField),
-                        new Field.FieldProperties(LoginDTO.class.getDeclaredField("password"), R.string.g_password, InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
+                form = new Form(this, new ForgotPasswordDTO(),
+                        new Field.FieldProperties(ForgotPasswordDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
                 form.intialize();
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
@@ -89,11 +67,11 @@ public class LoginActivity extends AbstractActivity implements RequestActionInte
                         if (dto != null) {
 
                             //create request
-                            WebClient<LoginSuccessDTO> webClient = new WebClient<>(RequestEnum.LOGIN,
+                            WebClient<ResultDTO> webClient = new WebClient<>(RequestEnum.FORGOT_PASSWORD,
                                     dto,
-                                    LoginSuccessDTO.class);
+                                    ResultDTO.class);
 
-                            Request request = new Request(LoginActivity.this, webClient);
+                            Request request = new Request(ForgotPasswordActivity.this, webClient);
 
                             //execute request
                             request.execute();
@@ -134,12 +112,9 @@ public class LoginActivity extends AbstractActivity implements RequestActionInte
     @Override
     public void successAction(DTO successDTO) {
 
-        Storage.store(this, (LoginSuccessDTO) successDTO);
-        Intent intent = new Intent(LoginActivity.this, MAIN_ACTIVITY);
-        //startActivityForResult(intent,0);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Toast.makeText(this,R.string.forgot_password_success,Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 }

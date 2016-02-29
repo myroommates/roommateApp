@@ -33,7 +33,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return activity.getString(menuElement.getSubMenuElements()[tabSelected].getName());
+        String string = activity.getString(menuElement.getSubMenuElements()[position].getName());
+        return string;
     }
 
 }

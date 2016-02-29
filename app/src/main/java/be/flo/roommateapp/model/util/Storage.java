@@ -160,7 +160,15 @@ public class Storage {
         for (RoommateDTO roommateDTO : roommateList) {
             computeColorForRoommate(roommateDTO);
         }
+    }
 
+    public static void removeRoommate(RoommateDTO roommateDTO) {
+        for (int i = 0; i < roommateList.size(); i++) {
+            if (roommateList.get(i).getId().equals(roommateDTO.getId())) {
+                roommateList.remove(i);
+                break;
+            }
+        }
     }
 
     /*
@@ -315,4 +323,6 @@ public class Storage {
         }
         return p;
     }
+
+
 }

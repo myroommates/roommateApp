@@ -16,6 +16,7 @@ import be.flo.roommateapp.model.util.exception.MyException;
 import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.widget.Field;
+import be.flo.roommateapp.vue.widget.FieldEditText;
 import be.flo.roommateapp.vue.widget.Form;
 
 /**
@@ -46,17 +47,19 @@ public class EditRoommateActivity extends AbstractEditActivity<RoommateDTO> {
         //build field
         try {
 
+
+
             //create field
             try {
                 form = new Form(this, roommateDTO,
-                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("name"), R.string.g_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
-                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("nameAbrv"), R.string.g_name_abrv),
+                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("name"), R.string.g_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME|InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("nameAbrv"), R.string.g_name_abrv,InputType.TYPE_TEXT_FLAG_CAP_WORDS),
                         new Field.FieldProperties(RoommateDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
+                form.intialize();
+                final Field fieldName = form.getField(R.string.g_name);
+                final Field fieldNameAbrv = form.getField(R.string.g_name_abrv);
 
-                final Field fieldName = form.getField(RoommateDTO.class.getDeclaredField("name"));
-                final Field fieldNameAbrv = form.getField(RoommateDTO.class.getDeclaredField("nameAbrv"));
-
-                ((EditText)fieldName.getFieldProperties().getInputView()).addTextChangedListener(new TextWatcher() {
+                ((FieldEditText)fieldName.getFieldProperties().getInputView()).addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -71,14 +74,12 @@ public class EditRoommateActivity extends AbstractEditActivity<RoommateDTO> {
                     public void afterTextChanged(Editable s) {
                         String name = (String) fieldName.getValue();
 
-                        if(name==null || name.length()==0){
+                        if (name == null || name.length() == 0) {
                             fieldNameAbrv.setValue(null);
-                        }
-                        else if(name.length()>3){
+                        } else if (name.length() > 3) {
+                            fieldNameAbrv.setValue(name.substring(0, 3));
+                        } else {
                             fieldNameAbrv.setValue(name);
-                        }
-                        else{
-                            fieldNameAbrv.setValue(name.substring(0,3));
                         }
                     }
                 });

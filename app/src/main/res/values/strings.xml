@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">Roommate !</string>
 
+    <!-- TECHNICAL -->
+    <string name="field_text_password_show">Show</string>
+    <string name="field_text_password_hide">Hide</string>
+
     <!-- GENERIC -->
     <string name="g_registration">Registration</string>
     <string name="g_welcome">Welcome</string>
@@ -23,7 +27,7 @@
     <string name="g_close">Close</string>
     <string name="g_none">None</string>
     <string name="g_valid">Valid</string>
-    <string name="g_refresh">Refresh</string>
+    <string name="g_refresh">Refresh</string>g_loading
     <string name="g_add">Add</string>
     <string name="g_remove">Remove</string>
     <string name="g_save">Save</string>
@@ -35,6 +39,10 @@
     <string name="logout">Logout</string>
     <string name="g_cancel">Cancel</string>
     <string name="calculator">Calculator</string>
+
+    <!-- FORGOT PASSWORD -->
+    <string name="forgot_password_help">Forgot your password  ? Get your email address and an email will be send with a new password</string>
+    <string name="forgot_password_success">An email was send. Check your email box</string>
 
 
     <!-- WELCOME -->
@@ -117,5 +125,6 @@
     <string name="createTicket_title">Create ticket</string>
     <string name="createShoppingItem_title">Create an article</string>
     <string name="my_name">Your name</string>
+
 
 </resources>

@@ -7,6 +7,7 @@
     -->
     <color name="positive_value">#ff00be00</color>
     <color name="negative_value">#ffce0000</color>
+    <color name="color_error">#FF0000</color>
 
     <!-- background -->
     <color name="main_color">#02ca52</color>
@@ -65,11 +66,32 @@
         <item name="android:background">@color/t_background</item>
     </style>
 
+    <!-- form -->
+    <style name="form">
+        <item name="android:background">#ffffff</item>
+    </style>
+
+    <style name="form_line">
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
     <!-- input -->
     <style name="input">
         <item name="android:textColor">@color/t_text</item>
         <item name="android:colorBackground">@color/t_background</item>
         <item name="android:layout_width">fill_parent</item>
+    </style>
+
+    <!-- link style -->
+    <style name="link">
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textColor">#1e5eff</item>
+    </style>
+
+    <!-- show password -->
+    <style name="field_text_show_password" parent="link">
+        <item name="android:paddingRight">5dp</item>
     </style>
 
     <!-- element -->

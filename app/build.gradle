@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.14.2'
+        classpath 'com.android.tools.build:gradle:1.3.0'
     }
 }
 apply plugin: 'com.android.application'
@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "be.flo.roommateapp"
-        minSdkVersion 14
+        minSdkVersion 11
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -40,4 +40,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'joda-time:joda-time:2.8.2'
+    compile 'javax.validation:validation-api:1.1.0.Final'
 }

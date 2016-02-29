@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
+    <uses-sdk android:minSdkVersion="11" />
+
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
@@ -44,6 +46,13 @@
                 android:name=".vue.activity.RegistrationActivity"
                 android:launchMode="singleInstance"
                 android:label="@string/g_registration">
+        </activity>
+
+        <!-- FORGOT PASSWORD -->
+        <activity
+            android:name=".vue.activity.ForgotPasswordActivity"
+            android:launchMode="singleInstance"
+            android:label="@string/g_registration">
         </activity>
 
         <!-- ROOMMATE -->

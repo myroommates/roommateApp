@@ -1,6 +1,8 @@
 package be.flo.roommateapp.vue.widget;
 
 import android.app.Activity;
+import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,9 +20,17 @@ public class DateView extends Button {
 
     final TimePickerFragment newFragment = new TimePickerFragment();
 
+    public DateView(Activity activity, AttributeSet attrs) {
+        super(activity, attrs);
+        initialization(activity);
+    }
+
     public DateView(final Activity activity) {
         super(activity);
+        initialization(activity);
+    }
 
+    public void initialization(final Activity activity) {
         setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setOnClickListener(new OnClickListener() {

@@ -14,13 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import be.flo.roommateapp.R;
-import be.flo.roommateapp.model.dto.Writable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import be.flo.roommateapp.R;
+import be.flo.roommateapp.model.dto.Writable;
 
 public class MultiSelectionSpinner<T extends Writable> extends Spinner implements OnMultiChoiceClickListener {
 
@@ -78,7 +79,12 @@ public class MultiSelectionSpinner<T extends Writable> extends Spinner implement
         String[] listString = new String[_items.size()];
 
         for (int i = 0; i < _items.size(); i++) {
-            listString[i] = _items.get(i).getString();
+            if(_items.get(i).getString() instanceof String){
+                listString[i] = (String) _items.get(i).getString();
+            }
+            else if(_items.get(i).getString() instanceof Integer){
+                listString[i] = getContext().getResources().getString((Integer) _items.get(i).getString());
+            }
         }
 
         return listString;
@@ -195,7 +201,13 @@ public class MultiSelectionSpinner<T extends Writable> extends Spinner implement
                 }
                 foundOne = true;
 
-                sb.append(_items.get(i).getString());
+
+                if(_items.get(i).getString() instanceof String){
+                    sb.append((String) _items.get(i).getString());
+                }
+                else if(_items.get(i).getString() instanceof Integer){
+                    sb.append(getContext().getResources().getString((Integer) _items.get(i).getString()));
+                }
             }
         }
         return sb.toString();

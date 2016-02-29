@@ -1,6 +1,7 @@
 package be.flo.roommateapp.model.util.externalRequest;
 
 import be.flo.roommateapp.model.dto.*;
+import be.flo.roommateapp.model.dto.post.ForgotPasswordDTO;
 import be.flo.roommateapp.model.dto.post.LoginDTO;
 import be.flo.roommateapp.model.dto.post.RegistrationDTO;
 import be.flo.roommateapp.model.dto.technical.DTO;
@@ -18,6 +19,8 @@ public enum RequestEnum {
             RequestType.POST, false, false, "rest/login", LoginDTO.class, LoginSuccessDTO.class),
     LOAD_DATA(
             RequestType.POST, true, false, "rest/load_data", null, LoginSuccessDTO.class),
+    FORGOT_PASSWORD(
+            RequestType.PUT, false, false, "rest/password", ForgotPasswordDTO.class, ResultDTO.class),
 
     //ticket
     TICKET_GET(

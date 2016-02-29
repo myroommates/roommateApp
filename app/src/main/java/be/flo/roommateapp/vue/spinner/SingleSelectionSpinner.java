@@ -14,16 +14,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import be.flo.roommateapp.R;
-import be.flo.roommateapp.model.dto.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import be.flo.roommateapp.R;
+import be.flo.roommateapp.model.dto.Writable;
 
 public class SingleSelectionSpinner<T extends Writable> extends Spinner implements OnMultiChoiceClickListener {
 
     private final List<T> _items = new ArrayList<T>();
     private T selected = null;
+    private SingleSelectionSpinnerChangeListener<T> listener;
 
     ArrayAdapter<String> simple_adapter;
 
@@ -32,16 +34,21 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
     }
 
     public SingleSelectionSpinner(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs);//, R.style.input);
 
-        simple_adapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_item);
+
+//        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View view = (View)inflater.inflate(R.layout.single_selection_spinner, null);
+//        addView(view);
+
+        simple_adapter = new ArrayAdapter<String>(context,R.layout.simple_spinner);
 
         super.setAdapter(simple_adapter);
     }
 
     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
         selected = _items.get(which);
+
     }
 
     @Override
@@ -57,20 +64,15 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
         //build view
         builder.setView(view);
 
-        /*
-        Button button = new Button(getContext());
-        builder.setView(button);
-        button.setText(R.string.g_close);
+        final AlertDialog alertDialog = builder.show();
 
-        button.setOnClickListener(new OnClickListener() {
+        alertDialog.findViewById(R.id.close).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 alertDialog.cancel();
             }
         });
-*/
 
-        final AlertDialog alertDialog = builder.show();
 
         return true;
     }
@@ -79,7 +81,13 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
         String[] listString = new String[_items.size()];
 
         for (int i = 0; i < _items.size(); i++) {
-            listString[i] = _items.get(i).getString();
+            if(_items.get(i).getString() instanceof String){
+                listString[i] = (String) _items.get(i).getString();
+            }
+            else if(_items.get(i).getString() instanceof Integer){
+                listString[i] = getContext().getResources().getString((Integer) _items.get(i).getString());
+            }
+
         }
 
         return listString;
@@ -97,6 +105,19 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
         simple_adapter.clear();
     }
 
+    public void setSelection(T selected) {
+        for (T t : _items) {
+            if (selected.equals(t)) {
+                this.selected = t;
+            }
+        }
+        simple_adapter.clear();
+        simple_adapter.add(buildSelectedItemString());
+        if (listener != null) {
+            listener.change(selected);
+        }
+    }
+
     public void setSelection(int index) {
         if (index >= 0 && index < _items.size()) {
             selected = _items.get(index);
@@ -106,6 +127,9 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
         }
         simple_adapter.clear();
         simple_adapter.add(buildSelectedItemString());
+        if (listener != null) {
+            listener.change(selected);
+        }
     }
 
     public T getSelectedItem() {
@@ -117,19 +141,38 @@ public class SingleSelectionSpinner<T extends Writable> extends Spinner implemen
         boolean foundOne = false;
 
         for (int i = 0; i < _items.size(); ++i) {
-            if (selected.equals(_items.get(i))) {
+            if (selected!=null && selected.equals(_items.get(i))) {
                 if (foundOne) {
                     sb.append(", ");
                 }
                 foundOne = true;
 
-                sb.append(_items.get(i).getString());
+                if(_items.get(i).getString() instanceof String){
+                    String string = (String) _items.get(i).getString();
+                    sb.append(string);
+                }
+                else if(_items.get(i).getString() instanceof Integer){
+                    sb.append(getContext().getResources().getString((Integer) _items.get(i).getString()));
+                }
             }
         }
-        return sb.toString();
+        String s = sb.toString();
+        return s;
     }
 
     public String getSelectedItemsAsString() {
         return buildSelectedItemString();
+    }
+
+    public SingleSelectionSpinnerChangeListener<T> getListener() {
+        return listener;
+    }
+
+    public void setListener(SingleSelectionSpinnerChangeListener<T> listener) {
+        this.listener = listener;
+    }
+
+    public interface SingleSelectionSpinnerChangeListener<T extends Writable> {
+        void change(T t);
     }
 }

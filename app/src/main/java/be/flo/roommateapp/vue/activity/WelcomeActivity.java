@@ -50,12 +50,12 @@ public class WelcomeActivity extends AbstractActivity {
 
 
         if (DEV_MODE) {
-            Storage.store(this, generateFakeData());
+            //Storage.store(this, generateFakeData());
             startActivity(new Intent(WelcomeActivity.this, MAIN_ACTIVITY));
         } else {
             if (false){//!ni.isConnected() || !ni.isAvailable()) {
                 if (DEV_MODE) {
-                    Storage.store(this, generateFakeData());
+                    //Storage.store(this, generateFakeData());
                     startActivity(new Intent(WelcomeActivity.this, MAIN_ACTIVITY));
                 } else {
                     DialogConstructor.dialogWarning(this,"you are not connected").show();
@@ -73,7 +73,7 @@ public class WelcomeActivity extends AbstractActivity {
             }
         }
     }
-
+/*
     public static LoginSuccessDTO generateFakeData() {
 
         LoginSuccessDTO loginSuccessDTO = new LoginSuccessDTO();
@@ -167,7 +167,7 @@ public class WelcomeActivity extends AbstractActivity {
 
         return loginSuccessDTO;
     }
-
+*/
     /**
      * login request
      */

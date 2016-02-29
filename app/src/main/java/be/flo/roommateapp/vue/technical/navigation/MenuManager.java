@@ -14,7 +14,7 @@ import be.flo.roommateapp.vue.fragment.shopping.ShoppingItemListFragment;
  */
 public class MenuManager {
 
-    public static enum MenuElement {
+    public enum MenuElement {
         MENU_EL_WELCOME(R.string.nav_drawer_welcome, 0, SubMenuElement.WELCOME),
         MENU_EL_COUNT(R.string.nav_drawer_count, 1, SubMenuElement.COUNT_RESUME, SubMenuElement.COUNT_TICKET_LIST),
         MENU_EL_SHOPPING(R.string.nav_drawer_shopping, 2, SubMenuElement.SHOPPING_LIST),
@@ -76,7 +76,7 @@ public class MenuManager {
     }
 
 
-    public static enum SubMenuElement {
+    public enum SubMenuElement {
         ADMIN_ROOMMATE_LIST(0, R.string.nav_config_roommate, RoommateFragment.class),
 
         COUNT_RESUME(0, R.string.nav_count_resume, ResumeFragment.class),

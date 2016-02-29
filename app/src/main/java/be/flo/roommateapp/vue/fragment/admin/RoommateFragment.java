@@ -232,6 +232,7 @@ public class RoommateFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.error_message)).setText(errorMessage);
             } else {
                 adapter.remove(roommateDTO);
+                Storage.removeRoommate(roommateDTO);
             }
         }
 

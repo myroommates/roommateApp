@@ -7,5 +7,5 @@ package be.flo.roommateapp.model.dto;
  */
 public interface Writable {
 
-    public String getString();
+    Object getString();
 }

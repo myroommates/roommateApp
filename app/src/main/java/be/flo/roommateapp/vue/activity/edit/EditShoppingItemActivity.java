@@ -51,6 +51,7 @@ public class EditShoppingItemActivity extends AbstractEditActivity<ShoppingItemD
                 form = new Form(this, shoppingItemDTO,
                         new Field.FieldProperties(ShoppingItemDTO.class.getDeclaredField("description"), R.string.g_desc, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
                         new Field.FieldProperties(ShoppingItemDTO.class.getDeclaredField("onlyForMe"), R.string.shopping_only_for_me));
+                form.intialize();
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }

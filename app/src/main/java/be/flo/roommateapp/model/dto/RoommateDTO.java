@@ -17,16 +17,10 @@ public class RoommateDTO extends DTO implements Writable {
     private String nameAbrv;
     @Pattern(regex = Pattern.EMAIL, message = "email attendue")
     private String email;
-    @Pattern(regex = "^[a-zA-Z0-9]{6,18}$", message = "Entre 6 et 18 lettres ou chiffre")
-    private String password;
 
     private float iconColor;
 
-    private boolean isAdmin;
-
     private String languageCode;
-
-    private boolean keepSessionOpen;
 
     private int iconColorTop;
 
@@ -84,14 +78,6 @@ public class RoommateDTO extends DTO implements Writable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public float getIconColor() {
         return iconColor;
     }
@@ -100,28 +86,12 @@ public class RoommateDTO extends DTO implements Writable {
         this.iconColor = iconColor;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
     public String getLanguageCode() {
         return languageCode;
     }
 
     public void setLanguageCode(String languageCode) {
         this.languageCode = languageCode;
-    }
-
-    public boolean isKeepSessionOpen() {
-        return keepSessionOpen;
-    }
-
-    public void setKeepSessionOpen(boolean keepSessionOpen) {
-        this.keepSessionOpen = keepSessionOpen;
     }
 
     @Override
@@ -146,11 +116,8 @@ public class RoommateDTO extends DTO implements Writable {
                 ", name='" + name + '\'' +
                 ", nameAbrv='" + nameAbrv + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", iconColor=" + iconColor +
-                ", isAdmin=" + isAdmin +
                 ", languageCode='" + languageCode + '\'' +
-                ", keepSessionOpen=" + keepSessionOpen +
                 '}';
     }
 }

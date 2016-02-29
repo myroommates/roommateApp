@@ -24,7 +24,9 @@ import be.flo.roommateapp.model.util.externalRequest.RequestEnum;
 import be.flo.roommateapp.model.util.externalRequest.WebClient;
 import be.flo.roommateapp.vue.RequestActionInterface;
 import be.flo.roommateapp.vue.activity.LoginActivity;
+import be.flo.roommateapp.vue.util.Tools;
 import be.flo.roommateapp.vue.widget.Field;
+import be.flo.roommateapp.vue.widget.FieldEditText;
 import be.flo.roommateapp.vue.widget.Form;
 
 /**
@@ -67,12 +69,18 @@ public class MyProfileFragment extends Fragment implements RequestActionInterfac
         //build field
         try {
 
+            //email field
+            FieldEditText emailField = (FieldEditText) inflater.inflate(R.layout.field_text, null);
+            emailField.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            emailField.setAutoCompleteValues(Tools.getAccountEmails(this.getActivity()));
+
             //create field
             try {
                 form = new Form(getActivity(), currentRoommate,
-                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("name"), R.string.g_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME),
-                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("nameAbrv"), R.string.g_name_abrv),
-                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("email"), R.string.g_email, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
+                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("name"), R.string.g_name, InputType.TYPE_TEXT_VARIATION_PERSON_NAME|InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("nameAbrv"), R.string.g_name_abrv,InputType.TYPE_TEXT_FLAG_CAP_WORDS),
+                        new Field.FieldProperties(RoommateDTO.class.getDeclaredField("email"), R.string.g_email, emailField));
+                form.intialize();
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }

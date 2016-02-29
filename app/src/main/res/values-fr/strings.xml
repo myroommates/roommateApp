@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name">Roommate !</string>
 
+
+    <!-- TECHNICAL -->
+    <string name="field_text_password_show">Afficher</string>
+    <string name="field_text_password_hide">Masquer</string>
+
     <!-- GENERIC -->
     <string name="g_registration">Enregistrement</string>
     <string name="g_welcome">Accueil</string>
@@ -36,6 +41,9 @@
     <string name="g_cancel">Annuler</string>
     <string name="calculator">Calculator</string>
 
+    <!-- FORGOT PASSWORD -->
+    <string name="forgot_password_help">Mot de passe oublié? Indiquez votre adresse email et un email vous sera envoyé avec un nouveau mot de passe</string>
+    <string name="forgot_password_success">L\'email a été correctement envoyé.</string>
 
     <!-- WELCOME -->
     <string name="welcome_bought_shopping_item">J\'ai acheté ces articles</string>
